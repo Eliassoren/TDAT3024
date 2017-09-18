@@ -19,8 +19,7 @@ function ydot = ydot(t, y)
     ydot(3) = y(4); % ? = ?'
     ydot(4) = -0.01 * y(4) + 1.2 * cos(y(3)) * (a1 - a2) / (len * a); % ?' = ...
     
-   % subplot(2, 2, 1);
-   %plot([t, ydot(3)]);
-   % axis([ 0, t + 50, 0 , 10 ]);
-    %  grid
-     % drawnow;
+    plot([t, ydot(3)]);
+    axis([ 0, t + 50, 0 , 10 ]);
+      grid
+      drawnow;

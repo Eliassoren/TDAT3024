@@ -11,10 +11,6 @@ function tacoma(inter, ic, n, p)
     y(1, :) = ic; % enter initial conds in y
     t(1) = inter(1); 
     len = 6;
-    
-    yMax = 0;
-    xPlot = [];
-    yPlot = [];
 
     for k = 1:n
         for i = 1:p
@@ -44,21 +40,13 @@ function tacoma(inter, ic, n, p)
     rcable = line('color', 'r', 'LineStyle', ' - ', 'LineWidth', 1, ...
     'erase', 'xor', 'xdata', [], 'ydata', []);
         
-    set(road, 'xdata', [-c c], 'ydata', [-s-y(1, 1) s-y(1, 1)])
-    set(lcable, 'xdata', [-c -c], 'ydata', [-s-y(1, 1) 8])
-    set(rcable, 'xdata', [c c], 'ydata', [s-y(1, 1) 8])
-    drawnow;
-    subplot(2, 2, 2);
-    if abs(y(1,3)) > yMax
-        yMax = abs(y(1,3));
-    end
-    
-    yLim = (yMax + yMax*0.2);
-    xPlot = [xPlot k];
-    yPlot = [yPlot y(1,3)];
-    
-    plot(xPlot, yPlot);
-    axis([ 0, k+50, -yLim, yLim ]);
+        set(road, 'xdata', [-c c], 'ydata', [-s-y(1, 1) s-y(1, 1)])
+        set(lcable, 'xdata', [-c -c], 'ydata', [-s-y(1, 1) 8])
+        set(rcable, 'xdata', [c c], 'ydata', [s-y(1, 1) 8])
+        drawnow;
+            subplot(2, 2, 2);
+   plot(k, y(1,3));
+    axis([ 0, 10, -0.02, 0.02 ]);
       grid
       drawnow;
         pause(h)
