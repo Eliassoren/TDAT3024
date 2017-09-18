@@ -32,7 +32,7 @@ function tacoma(inter, ic, n, p, tol)
             [w,err] = fehlbergstep(t(i,:), y(i,:), h);
             y(i+1,:) = w;
             e(i+1,:) = err;
-            h = h* 0.8 * (tol/e(i+1,:))^(1/3)
+            h = h* 0.8 * (tol/e(i+1,:))^(1/3);
             while e(i+1,:) > tol % Try again until toleration is met
                 % Another try after adjustment
                 [w,err] = fehlbergstep(t(i,:), y(i,:), h);
@@ -42,6 +42,7 @@ function tacoma(inter, ic, n, p, tol)
                     h = h / 2; % Reduce step size h to reduce error
                 end
             end
+         
         end
         
         y(1, :) = y(p+1, :);
