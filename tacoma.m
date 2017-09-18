@@ -11,16 +11,14 @@ function tacoma(inter, ic, n, p, tol)
     clf % clear figure window
     h = (inter(2) - inter(1)) / n;
     y(1, :) = ic; % enter initial conds in y
-    t(1, :) = inter(1); 
-    e(1, :) = 0.01;
+    t(1, :) = inter(1); % t values in right side ode
+    e(1, :) = 0.01; % error
     len = 6;
     
     yMax = 0;
     yMaxYPosition = 0;
     yMaxError = 0;
     yMaxStepLength = 0;
-    stepLength = [];
-    error = [];
     xPlot = [];
     yPlot = [];
     xPlotPosition = [];
@@ -42,6 +40,7 @@ function tacoma(inter, ic, n, p, tol)
                 [w,err] = fehlbergstep(t(i,:), y(i,:), h);
                 y(i+1,:) = w;
                 e(i+1,:) = err;
+                
                 if e(i+1,:) > tol
                     h = h / 2; % Reduce step size h to reduce error
                 end

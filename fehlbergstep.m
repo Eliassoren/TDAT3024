@@ -1,15 +1,15 @@
-   % Inputs
+% Inputs
     % t: The t step values
     % y: The y values in ODE
     % h: Step length
     % tol: The tolerance in error
-   % Outputs
+% Outputs
     % Wout: Numerical y value output
     % E: Error from 
-   % Example usage in loop
+% Example usage in loop
     % fehlbergstep(t(i,:), y(i,:), h);
 function [ Wout , E ] = fehlbergstep( t, y, h )
-   % Values from runge-kutta method.
+   % Values from runge-kutta-fehlberg method.
    A=[ 1/4        0         0         0        0;
         3/32       9/32      0         0        0;
      1932/2197 -7200/2197 7296/2197    0        0;
