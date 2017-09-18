@@ -1,5 +1,5 @@
 function w  = rk4(func,y0,a,b,n)
-% Runge-kutta of fourth order
+% Step Runge-kutta of fourth order
 
 % Input
 %   func: the right side function of ODE
