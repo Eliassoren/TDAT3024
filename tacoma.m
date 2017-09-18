@@ -1,11 +1,11 @@
-%Program 6.6 Animation program for bridge using IVP solver
-%Inputs: time interval inter,
+% Program 6.6 Animation program for bridge using IVP solver
+% Inputs: time interval inter,
 % ic=[y(1,1) y(1,2) y(1,3) y(1,4)],
 % number of steps n
 % steps per point plotted p
 % tol: tolerance of error
-%Calls a one-step method such as trapstep.m
-%Example usage: tacoma([0 1000],[1 0 0.001 0],25000,5)
+% Calls a one-step method such as trapstep.m
+% Example usage: tacoma([0 1000],[1 0 0.001 0],25000,5)
 
 function tacoma(inter, ic, n, p, tol, W)
     clf % clear figure window
