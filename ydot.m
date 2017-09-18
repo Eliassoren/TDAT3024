@@ -1,7 +1,8 @@
 function ydot = ydot(t, y)
     len = 6;
     a = 0.2;
-    W = 0.01; %Windspeed
+
+    W = 122; %Windspeed km/h
     omega = 2 * pi * 38 / 60;
     
     a1 = exp(a * (y(1) - len * sin(y(3))));
