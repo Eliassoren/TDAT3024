@@ -1,5 +1,11 @@
 %Calls a onestep method such as trapstep.m
-  %Example usage: tacoma([0 1000],[1 0 0.001 0],25000,5)
+%Example usage: tacoma([0 1000],[1 0 0.001 0],25000,5)
+%Inputs: 
+ % time interval inter,
+ % ic=[y(1,1) y(1,2) y(1,3) y(1,4)],
+ % number of steps n
+ % steps per point plotted p
+ % tol: tolerance of error
   function traptacoma(inter, ic, n, p)
      clf % clear figure window
      h = (inter(2) - inter(1)) / n;
