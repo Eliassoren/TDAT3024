@@ -1,8 +1,8 @@
 % System of linear equations 
-function ydot = ydot(t, y)
+
+function ydot = ydot(t, y, W)
     len = 6;
     a = 0.2;
-    W = 50; % Windspeed km/h
     d = 0.01; % Dampong coefficient
     omega = 2 * pi * 38 / 60;
     
