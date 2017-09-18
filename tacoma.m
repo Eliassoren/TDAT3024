@@ -12,8 +12,10 @@ function tacoma(inter, ic, n, p, tol)
     h = (inter(2) - inter(1)) / n;
     y(1, :) = ic; % enter initial conds in y
     t(1, :) = inter(1); % t values in right side ode
-    e(1, :) = 0.01; % error
+    e(1, :) = 0.1; % error
+    startError = 0.1; % This has to be SAME as the error above
     len = 6;
+    initialAngle = y(1,3); %The initial angle from the initial conditions
     
     %These values are used for calibrating the graphs so the height
     %is dynamicaly changed to fit for the current values
@@ -21,7 +23,12 @@ function tacoma(inter, ic, n, p, tol)
     yMaxYPosition = 0;
     yMaxError = 0;
     yMaxStepLength = 0;
-
+    yMaxErrorMagnify = 0;
+    yMaxAngleMagnify = 0;
+    
+    %This value is for finding if the error is magnified by 100 or more
+    errorMagnify = 0;
+    angleMagnify = 0;
     
     %These tables contain the values being plotted 
     %into each graph and subgraph
@@ -33,6 +40,10 @@ function tacoma(inter, ic, n, p, tol)
     yPlotError = [];
     xPlotStepLength = [];
     yPlotStepLength = [];
+    xPlotErrorMagnify = [];
+    yPlotErrorMagnify = [];
+    xPlotAngleMagnify = [];
+    yPlotAngleMagnify = [];
     warning('off', 'all');
 
     for k = 1:n
@@ -177,6 +188,54 @@ function tacoma(inter, ic, n, p, tol)
     axis([ 0, t(1)+50, 0, yLim ]); %axis defined with calibration
     grid %grid enabled
     
+    %Next subplot
+    subplot(3,3,6); %ERROR MAGNIFICATION
+    errorMagnify = e(1,1) / startError;
+    if abs(errorMagnify) > yMaxErrorMagnify %calibration
+        yMaxErrorMagnify = abs(errorMagnify);
+    end
     
+    yLim = (yMaxErrorMagnify + yMaxErrorMagnify*0.2);%calibration value
+    
+    %These points will be drawn
+    xPlotErrorMagnify = [xPlotErrorMagnify t(1)];
+    yPlotErrorMagnify = [yPlotErrorMagnify errorMagnify];
+    
+    %Points get drawn
+    graph = plot(xPlotErrorMagnify, yPlotErrorMagnify);
+    
+    title('Error magnification'); %Title
+    xlabel('Time (s)') % x-axis label
+    ylabel('Error magnification') % y-axis label
+    
+    axis([ 0, t(1)+50, 0, yLim ]); %axis defined with calibration
+    grid %grid enabled
+    
+    %Next subplot
+    subplot(3,3,7); %ANGLE MAGNIFICATION
+    angleMagnify = y(1,3) / initialAngle;
+    if abs(angleMagnify) > yMaxAngleMagnify %calibration
+        yMaxAngleMagnify = abs(angleMagnify);
+    end
+    
+    if angleMagnify >= 100
+        a = 'MAGNIFICATION REACHED 100'
+    end
+    
+    yLim = (yMaxAngleMagnify + yMaxAngleMagnify*0.2);%calibration value
+    
+    %These points will be drawn
+    xPlotAngleMagnify = [xPlotAngleMagnify t(1)];
+    yPlotAngleMagnify = [yPlotAngleMagnify angleMagnify];
+    
+    %Points get drawn
+    graph = plot(xPlotAngleMagnify, yPlotAngleMagnify);
+    
+    title('Angle magnification'); %Title
+    xlabel('Time (s)') % x-axis label
+    ylabel('Angle magnification') % y-axis label
+    
+    axis([ 0, t(1)+50, -yLim, yLim ]); %axis defined with calibration
+    grid %grid enabled
     
     end
