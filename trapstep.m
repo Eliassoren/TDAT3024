@@ -9,7 +9,7 @@ function y = trapstep(t, x, h)
 function ydot = ydot(t, y)
     len = 6;
     a = 0.2;
-    W = 80;
+    W = 160;
     omega = 2 * pi * 38 / 60;
     
     a1 = exp(a * (y(1) - len * sin(y(3))));
