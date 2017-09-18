@@ -15,12 +15,15 @@ function tacoma(inter, ic, n, p, tol)
     e(1, :) = 0.01;
     len = 6;
     
-    yMax = 0;
+    %These values are used for calibrating the graphs so the height
+    %is dynamicaly changed to fit for the current values
+    yMax = 0; 
     yMaxYPosition = 0;
     yMaxError = 0;
     yMaxStepLength = 0;
-    stepLength = [];
-    error = [];
+    
+    %These tables contain the values being plotted 
+    %into each graph and subgraph
     xPlot = [];
     yPlot = [];
     xPlotPosition = [];
@@ -76,78 +79,100 @@ function tacoma(inter, ic, n, p, tol)
     ylabel('Height (m)') % y-axis label
     
     drawnow;
-    subplot(3, 3, 2); %Angle
+    subplot(3, 3, 2); %Angle subgraph
     if abs(y(1,3)) > yMax
-        yMax = abs(y(1,3));
+        yMax = abs(y(1,3)); %Calibrating the graph
     end
     
-    yLim = (yMax + yMax*0.2);
+    %Graph index is calibrated by this value
+    yLim = (yMax + yMax*0.2); 
+    
+    %The values for the current iteration are saved
     xPlot = [xPlot t(1)];
     yPlot = [yPlot y(1,3)];
     
-    graph = plot(xPlot, yPlot);
-    title('Angle');
+    graph = plot(xPlot, yPlot); %The graph plots the points given
+    
+    title('Angle'); %Subgraph title
     xlabel('Time (s)') % x-axis label
     ylabel('Angle (radians)') % y-axis label
     
-    axis([ 0, t(1)+50, -yLim, yLim ]);
-      grid
+    %The axis is drawn given the calibration value calculated earlier
+    axis([ 0, t(1)+50, -yLim, yLim ]); 
+      grid %This enables the grid
         pause(h)
+        
+    %if the window is closed the loop exits
     if ~ishghandle(graph) || ~ishghandle(road)
-        return
+        return 
     end
     
+    %Next subplot
     subplot(3,3,3); %Y position
     if abs(y(1,1)) > yMaxYPosition
-        yMaxYPosition = abs(y(1,1));
+        yMaxYPosition = abs(y(1,1)); %Calibration
     end
     
-    yLim = (yMaxYPosition);
+    yLim = (yMaxYPosition); %Calibration value
+    
+    %These points will be plotted
     xPlotPosition = [xPlotPosition t(1)];
     yPlotPosition = [yPlotPosition y(1,1)];
     
+    %The graph is drawn
     graph = plot(xPlotPosition, yPlotPosition);
-    title('Y-position of bridge');
+    
+    title('Y-position of bridge'); %Title set, has to be done after graph
     xlabel('Time (s)') % x-axis label
     ylabel('height (m)') % y-axis label
     
-    axis([ 0, t(1)+50, -yLim, yLim ]);
+    axis([ 0, t(1)+50, -yLim, yLim ]); %axis defined with calibration
     grid
     
+    %Next subplot
     subplot(3,3,4); %ERROR
     if abs(e(1,1)) > yMaxError
-        yMaxError = abs(e(1,1));
+        yMaxError = abs(e(1,1)); %Calibration
     end
     
-    yLim = (yMaxError + yMaxError*0.2);
-    xPlotError = [xPlotError t(1)];
+    yLim = (yMaxError + yMaxError*0.2); %Calibration value
+    
+    %Points for plotting
+    xPlotError = [xPlotError t(1)]; 
     yPlotError = [yPlotError e(1,1)];
     
+    %Plot drawn
     graph = plot(xPlotError, yPlotError);
-    title('Error');
+    
+    title('Error'); %Title of graph
     xlabel('Time (s)') % x-axis label
     ylabel('Error (m)') % y-axis label
     
-    axis([ 0, t(1)+50, 0, yLim ]);
+    axis([ 0, t(1)+50, 0, yLim ]); %axis defined with calibration
     grid
     
+    %Next subplot
     s5 = subplot(3,3,5); %STEP LENGTH
     subplot(s5, 'stepLength', 'm');
-    if abs(h) > yMaxStepLength
+    if abs(h) > yMaxStepLength %calibration
         yMaxStepLength = abs(h);
     end
     
-    yLim = (yMaxStepLength + yMaxStepLength*0.2);
+    yLim = (yMaxStepLength + yMaxStepLength*0.2);%calibration value
+    
+    %These points will be drawn
     xPlotStepLength = [xPlotStepLength t(1)];
     yPlotStepLength = [yPlotStepLength h];
     
+    %Points get drawn
     graph = plot(xPlotStepLength, yPlotStepLength);
-    title('Steplength');
+    
+    title('Steplength'); %Title
     xlabel('Time (s)') % x-axis label
     ylabel('Step length') % y-axis label
     
-    axis([ 0, t(1)+50, 0, yLim ]);
-    grid
+    axis([ 0, t(1)+50, 0, yLim ]); %axis defined with calibration
+    grid %grid enabled
     
     
     
