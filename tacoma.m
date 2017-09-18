@@ -77,7 +77,6 @@ function tacoma(inter, ic, n, p, tol)
     
     drawnow;
     subplot(3, 3, 2); %Angle
-    title('Angle');
     if abs(y(1,3)) > yMax
         yMax = abs(y(1,3));
     end
@@ -87,6 +86,9 @@ function tacoma(inter, ic, n, p, tol)
     yPlot = [yPlot y(1,3)];
     
     graph = plot(xPlot, yPlot);
+    title('Angle');
+    xlabel('Time (s)') % x-axis label
+    ylabel('Angle (radians)') % y-axis label
     
     axis([ 0, t(1)+50, -yLim, yLim ]);
       grid
@@ -96,7 +98,6 @@ function tacoma(inter, ic, n, p, tol)
     end
     
     subplot(3,3,3); %Y position
-    title('Y-position of bridge');
     if abs(y(1,1)) > yMaxYPosition
         yMaxYPosition = abs(y(1,1));
     end
@@ -106,12 +107,14 @@ function tacoma(inter, ic, n, p, tol)
     yPlotPosition = [yPlotPosition y(1,1)];
     
     graph = plot(xPlotPosition, yPlotPosition);
+    title('Y-position of bridge');
+    xlabel('Time (s)') % x-axis label
+    ylabel('height (m)') % y-axis label
     
     axis([ 0, t(1)+50, -yLim, yLim ]);
     grid
     
     subplot(3,3,4); %ERROR
-    title('Error');
     if abs(e(1,1)) > yMaxError
         yMaxError = abs(e(1,1));
     end
@@ -121,6 +124,9 @@ function tacoma(inter, ic, n, p, tol)
     yPlotError = [yPlotError e(1,1)];
     
     graph = plot(xPlotError, yPlotError);
+    title('Error');
+    xlabel('Time (s)') % x-axis label
+    ylabel('Error (m)') % y-axis label
     
     axis([ 0, t(1)+50, 0, yLim ]);
     grid
@@ -136,6 +142,9 @@ function tacoma(inter, ic, n, p, tol)
     yPlotStepLength = [yPlotStepLength h];
     
     graph = plot(xPlotStepLength, yPlotStepLength);
+    title('Steplength');
+    xlabel('Time (s)') % x-axis label
+    ylabel('Step length') % y-axis label
     
     axis([ 0, t(1)+50, 0, yLim ]);
     grid
