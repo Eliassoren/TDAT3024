@@ -20,7 +20,7 @@ function tacoma(inter, ic, n, p)
     for k = 1:n
         for i = 1:p
             t(i + 1,:) = t(i,:) + h;
-            y(i + 1,:) = fehlbergstep(t(i,:), y(i,:), h)%trapstep(t(i), y(i, :), h);
+            y(i + 1,:) = fehlbergstep(t(i,:), y(i,:), h);%trapstep(t(i), y(i, :), h);
         end
         
         y(1, :) = y(p + 1, :);
