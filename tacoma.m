@@ -8,7 +8,7 @@ function tacoma(inter, ic, n, p)
     clf % clear figure window
     h = (inter(2) - inter(1)) / n;
     y(1, :) = ic; % enter initial conds in y
-    t(1) = inter(1); 
+    t(1, :) = inter(1); 
     len = 6;
     
     set(gca, 'XLim', [-8 8], 'YLim', [-8 8], ...
@@ -25,12 +25,12 @@ function tacoma(inter, ic, n, p)
 
     for k = 1:n
         for i = 1:p
-            t(i + 1) = t(i) + h;
-            y(i + 1, :) = trapstep(t(i), y(i, :), h);
+            t(i + 1,:) = t(i,:) + h;
+            y(i + 1,:) = fehlbergstep(t(i,:), y(i,:), h)%trapstep(t(i), y(i, :), h);
         end
         
         y(1, :) = y(p + 1, :);
-        t(1) = t(p + 1);
+        t(1, :) = t(p + 1, :);
         
         z1(k) = y(1, 1);
         z3(k) = y(1, 3);
