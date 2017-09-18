@@ -185,7 +185,8 @@ function tacoma(inter, ic, n, p, tol, W)
     xlabel('Time (s)') % x-axis label
     ylabel('Step length') % y-axis label
     
-    axis([ 0, t(1)+50, 0, yLim ]); %axis defined with calibration
+    %THIS AXIS IS HARDCODED (DYNAMIC WOULD BE SET BY yLIM-------------
+    axis([ 0, t(1)+50, 0.05, 0.15 ]); %axis defined with calibration
     grid %grid enabled
     
     %Next subplot
