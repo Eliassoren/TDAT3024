@@ -1,10 +1,10 @@
-% System of linear equations 
+% System med lineære diffliginger 
 
 function ydot = ydot(t, y, W)
     len = 6;
-    a = 0.2;
-    d = 0.01; % Dampong coefficient
-    omega = 2 * pi * 38 / 60;
+    a = 0.2; % Hookes koeffisient for ulinearitet
+    d = 0.01; % Dempingskoeffisient
+    omega = 2 * pi * 38 / 60; % Vinkel på brua
     
     a1 = exp(a * (y(1) - len * sin(y(3))));
     a2 = exp(a * (y(1) + len * sin(y(3))));
