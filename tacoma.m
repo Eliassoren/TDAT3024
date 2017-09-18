@@ -16,6 +16,8 @@ function tacoma(inter, ic, n, p)
     yMax = 0;
     yMaxYPosition = 0;
     yMaxError = 0;
+    yMaxStepLength = 0;
+    stepLength = [];
     error = [];
     xPlot = [];
     yPlot = [];
@@ -23,6 +25,8 @@ function tacoma(inter, ic, n, p)
     yPlotPosition = [];
     xPlotError = [];
     yPlotError = [];
+    xPlotStepLength = [];
+    yPlotStepLength = [];
 
     for k = 1:n
         for i = 1:p
@@ -39,9 +43,9 @@ function tacoma(inter, ic, n, p)
         c = len * cos(y(1, 3));
         s = len * sin(y(1, 3));
         
-        subplot(2,2,1);
-        set(gca, 'XLim', [-8 8], 'YLim', [-20 20], ...
-        'XTick', [-8 0 8], 'YTick', [-16 -12 -8 -4 0 4 8 12 16], ...
+        subplot(3,3,1);
+        set(gca, 'XLim', [-6.5 6.5], 'YLim', [-20 20], ...
+        'XTick', [-6 0 6], 'YTick', [-16 -12 -8 -4 0 4 8 12 16], ...
         'Drawmode', 'fast', 'Visible', 'on', 'NextPlot', 'add');
         cla; % clear screen
         axis square % make aspect ratio 1-1
@@ -52,9 +56,14 @@ function tacoma(inter, ic, n, p)
     'erase', 'xor', 'xdata', [-c -c], 'ydata', [-s-y(1, 1) 8]);
     rcable = line('color', 'r', 'LineStyle', ' - ', 'LineWidth', 1, ...
     'erase', 'xor', 'xdata', [c c], 'ydata', [s-y(1, 1) 8]);
-
+    
+    title('Tacoma bridge simulation'); %graph title
+    xlabel('Width (m)') % x-axis label
+    ylabel('Height (m)') % y-axis label
+    
     drawnow;
-    subplot(2, 2, 2); %Angle
+    subplot(3, 3, 2); %Angle
+    title('Angle');
     if abs(y(1,3)) > yMax
         yMax = abs(y(1,3));
     end
@@ -72,7 +81,8 @@ function tacoma(inter, ic, n, p)
         return
     end
     
-    subplot(2,2,3); %Y position
+    subplot(3,3,3); %Y position
+    title('Y-position of bridge');
     if abs(y(1,1)) > yMaxYPosition
         yMaxYPosition = abs(y(1,1));
     end
@@ -86,7 +96,8 @@ function tacoma(inter, ic, n, p)
     axis([ 0, t(1)+50, -yLim, yLim ]);
     grid
     
-    subplot(2,2,4); %ERROR
+    subplot(3,3,4); %ERROR
+    title('Error');
     if abs(error) > yMaxError
         yMaxError = abs(error(1));
     end
@@ -99,5 +110,22 @@ function tacoma(inter, ic, n, p)
     
     axis([ 0, t(1)+50, 0, yLim ]);
     grid
+    
+    s5 = subplot(3,3,5); %STEP LENGTH
+    subplot(s5, 'stepLength', 'm');
+    if abs(h) > yMaxStepLength
+        yMaxStepLength = abs(h);
+    end
+    
+    yLim = (yMaxStepLength + yMaxStepLength*0.2);
+    xPlotStepLength = [xPlotStepLength t(1)];
+    yPlotStepLength = [yPlotStepLength h];
+    
+    graph = plot(xPlotStepLength, yPlotStepLength);
+    
+    axis([ 0, t(1)+50, 0, yLim ]);
+    grid
+    
+    
     
     end
