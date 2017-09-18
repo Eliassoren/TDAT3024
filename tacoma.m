@@ -7,7 +7,7 @@
 %Calls a one-step method such as trapstep.m
 %Example usage: tacoma([0 1000],[1 0 0.001 0],25000,5)
 
-function tacoma(inter, ic, n, p, tol)
+function tacoma(inter, ic, n, p, tol, W)
     clf % clear figure window
     h = (inter(2) - inter(1)) / n;
     y(1, :) = ic; % enter initial conds in y
@@ -49,13 +49,13 @@ function tacoma(inter, ic, n, p, tol)
     for k = 1:n
         for i = 1:p
             t(i+1,:) = t(i,:)+h;
-            [w, err] = fehlbergstep(t(i,:), y(i,:), h);
+            [w, err] = fehlbergstep(t(i,:), y(i,:), h, W);
             y(i+1,:) = w;
             e(i+1,:) = err;
             h = h* 0.8 * (tol/e(i+1,:))^(1/4);
             while e(i+1,:) > tol % Try again until toleration is met
                 % Another try after adjustment
-                [w,err] = fehlbergstep(t(i,:), y(i,:), h);
+                [w,err] = fehlbergstep(t(i,:), y(i,:), h, W);
                 y(i+1,:) = w;
                 e(i+1,:) = err;
                 
