@@ -113,13 +113,13 @@ function tacoma(inter, ic, n, p, tol)
     
     subplot(3,3,4); %ERROR
     title('Error');
-    if abs(error) > yMaxError
-        yMaxError = abs(error(1));
+    if abs(e(1,1)) > yMaxError
+        yMaxError = abs(e(1,1));
     end
     
     yLim = (yMaxError + yMaxError*0.2);
     xPlotError = [xPlotError t(1)];
-    yPlotError = [yPlotError error(1)];
+    yPlotError = [yPlotError e(1,1)];
     
     graph = plot(xPlotError, yPlotError);
     
