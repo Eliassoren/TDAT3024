@@ -1,16 +1,18 @@
 %Program 6.6 Animation program for bridge using IVP solver
 %Inputs: time interval inter,
 % ic=[y(1,1) y(1,2) y(1,3) y(1,4)],
-% number of steps n, steps per point plotted p
+% number of steps n
+% steps per point plotted p
+% tol: tolerance of error
 %Calls a one-step method such as trapstep.m
 %Example usage: tacoma([0 1000],[1 0 0.001 0],25000,5)
-function tacoma(inter, ic, n, p)
-    warning('off', 'all');
-    % ic: [y y' ? ?']
-    % clf % clear figure window
+
+function tacoma(inter, ic, n, p, tol)
+    clf % clear figure window
     h = (inter(2) - inter(1)) / n;
     y(1, :) = ic; % enter initial conds in y
     t(1, :) = inter(1); 
+    e(1, :) = 0.01;
     len = 6;
     
     yMax = 0;
@@ -30,12 +32,25 @@ function tacoma(inter, ic, n, p)
 
     for k = 1:n
         for i = 1:p
-            t(i + 1,:) = t(i,:) + h;
-            [y(i + 1,:), error(i)] = fehlbergstep(t(i,:), y(i,:), h);%trapstep(t(i), y(i, :), h);
+
+            t(i+1,:) = t(i,:)+h;
+            [w,err] = fehlbergstep(t(i,:), y(i,:), h);
+            y(i+1,:) = w;
+            e(i+1,:) = err;
+            h = h* 0.8 * (tol/e(i+1,:))^(1/3)
+            while e(i+1,:) > tol % Try again until toleration is met
+                % Another try after adjustment
+                [w,err] = fehlbergstep(t(i,:), y(i,:), h);
+                y(i+1,:) = w;
+                e(i+1,:) = err;
+                if e(i+1,:) > tol
+                    h = h / 2; % Reduce step size h to reduce error
+                end
+            end
         end
         
-        y(1, :) = y(p + 1, :);
-        t(1, :) = t(p + 1, :);
+        y(1, :) = y(p+1, :);
+        t(1, :) = t(p+1, :);
         
         z1(k) = y(1, 1);
         z3(k) = y(1, 3);
