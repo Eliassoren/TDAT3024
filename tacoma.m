@@ -33,6 +33,7 @@ function tacoma(inter, ic, n, p, tol)
     yPlotError = [];
     xPlotStepLength = [];
     yPlotStepLength = [];
+    warning('off', 'all');
 
     for k = 1:n
         for i = 1:p
@@ -40,7 +41,7 @@ function tacoma(inter, ic, n, p, tol)
             [w,err] = fehlbergstep(t(i,:), y(i,:), h);
             y(i+1,:) = w;
             e(i+1,:) = err;
-            h = h* 0.8 * (tol/e(i+1,:))^(1/4)
+            h = h* 0.8 * (tol/e(i+1,:))^(1/4);
             while e(i+1,:) > tol % Try again until toleration is met
                 % Another try after adjustment
                 [w,err] = fehlbergstep(t(i,:), y(i,:), h);
