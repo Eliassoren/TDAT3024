@@ -1,15 +1,15 @@
-% Inputs
-    % t: The t step values
-    % y: The y values in ODE
-    % h: Step length
-    % tol: The tolerance in error
+% Input
+    % t: Tidsvariabelen
+    % y: Høyreside av ODE
+    % h: Steglengde
+    % tol: Feiltoleranse
 % Outputs
-    % Wout: Numerical y value output
-    % E: Error from 
-% Example usage in loop
+    % Wout: Nytt system for y
+    % E: Feilkilde fra numerisk løsning
+% Eksempelbruk i løkke
     % fehlbergstep(t(i,:), y(i,:), h);
 function [ Wout , E ] = fehlbergstep( t, y, h, W)
-   % Values from runge-kutta-fehlberg method.
+   % Konstantverdier fra runge-kutta-fehlbergs metode
    A=[ 1/4        0         0         0        0;
         3/32       9/32      0         0        0;
      1932/2197 -7200/2197 7296/2197    0        0;
@@ -22,6 +22,7 @@ function [ Wout , E ] = fehlbergstep( t, y, h, W)
    
    C = [ 1/4 3/8 12/13 1 1/2];
    
+   % Stegene i metoden
     s1=ydot(t, y, W);
     s2=ydot(t+C(1)*h, y+h*(A(1,1)*s1), W);
     s3=ydot(t+C(2)*h, y+h*(A(2,1)*s1+A(2,2)*s2), W);
