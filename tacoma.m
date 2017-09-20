@@ -7,7 +7,7 @@
 % Calls a one-step method such as trapstep.m
 % Example usage: tacoma([0 1000],[1 0 0.001 0],25000,5)
 
-function tacoma(inter, ic, n, p, tol, W)
+function [Windspeed] = tacoma(inter, ic, n, p, tol, W)
     clf % clear figure window
     h = (inter(2) - inter(1)) / n;
     y(1, :) = ic; % enter initial conds in y
