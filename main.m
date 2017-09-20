@@ -1,7 +1,7 @@
-% ([interval],initial conds[y y' ? ?'],#of steps,steps per plotpoint,err
+% ([interval],initial conds[y y' theta theta'],step lenght,steps per plotpoint,err
 % tolerance, Windspeed in km/h)
 
-tacoma([0 1000], [1 0 0.002 0], 25000, 5, 0.0000001, 75);
+tacoma([0 1000], [1 0 0.002 0], 0.04, 5, 0.0000001, 75);
 
 
 
