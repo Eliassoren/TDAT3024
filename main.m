@@ -48,10 +48,10 @@ exercise6 = true;
 xPlotPosition = [];
 yPlotPosition = [];
 if exercise6
-    theta = 0.00004;
-    windspeed = 200;  %starting windspeed
-    mf = 0.000002; %multiplicationfactor
-    n = 15; %steps that will be iterated
+    theta = 0.0000001;
+    windspeed = 150;  %starting windspeed
+    mf = 0.000000002; %multiplicationfactor
+    n = 10; %steps that will be iterated
     for i = 0: n
         angularMagnification = tacomaComputing([0 1000], [1 0 (theta + (i * mf)) 0], 25000, 5, 0.0000001, windspeed);
         xPlotPosition = [xPlotPosition (theta + (i * mf))];
