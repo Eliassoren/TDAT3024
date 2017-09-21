@@ -2,6 +2,10 @@
 % tolerance, Windspeed in km/h)
 
 runGraph = false; %Set this to true to run graph
+exercise3 = false;
+exercise4 = false;
+exercise6 = true;
+
 if (runGraph)
     tacoma([0 1000], [1 0 0.002 0], 25000, 5, 0.0000001, 63);
 end
@@ -11,7 +15,6 @@ end
 % Exercise 4 (finding minimum windspeed inwhich a angular
 % magnification of 100 or more occurs
 
-exercise4 = false; % Change this to true to run code below
 %EXERCISE 4 -------------------------------------------------------
 if exercise4
     windspeed = 200;  %starting windspeed
@@ -27,8 +30,6 @@ if exercise4
 end
 
 %EXERCISE 3 -------------------------------------------------------
-exercise3 = false;
-
 if exercise3
     windspeed = 50;  %starting windspeed
     angularMagnificationTheta1 = tacomaComputing([0 1000], [1 0 0.001 0], 25000, 5, 0.0000001, windspeed);
@@ -43,8 +44,6 @@ end
 
 
 %EXERCISE 6 --------------------------------------------------------
-
-exercise6 = true;
 xPlotPosition = [];
 yPlotPosition = [];
 if exercise6
