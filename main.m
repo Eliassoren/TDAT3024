@@ -1,19 +1,17 @@
-% ([interval],initial conds[y y' theta theta'],step lenght,steps per plotpoint,err
-% tolerance, Windspeed in km/h)
+% ([intervall],initialverdier[y y' theta theta'],steglengde,steg per plotpoint, feilkilde, toleranse, vindhastighet km/h)
 
-tacoma([0 1000], [1 0 0.002 0], 0.04, 5, 0.0000001, 75);
-
+tacoma([0 1000], [1 0 0.002 0], 0.04, 5, 0.000001, 160);
 
 
-% ([interval],initial conds,#of steps,steps per plotpoint, W = Windspeed
+
 % Exercise 4 (finding minimum windspeed inwhich a angular
 % magnification of 100 or more occurs
 
-runComputing = false; % Change this to true to run code below
+runComputing = false; % Endre til true for å kjøre koden under
 
 if runComputing
-    windspeed = 50;  %starting windspeed
-    n = 50; %steps that will be iterated
+    windspeed = 50;  % start vindhastighet
+    n = 50; % steg som vil bli iterert
     for i = 0: n
         angularMagnification = computingTraptacoma([0 1000], [1 0 0.002 0], 25000, 5, windspeed + i);
         if angularMagnification > 100
