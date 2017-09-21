@@ -1,21 +1,23 @@
 % Program 6.6 Animation program for bridge using IVP solver
 % Inputs: 
-% inter: time interval 
-% ic=[y(1,1) y(1,2) y(1,3) y(1,4)],
-% h: step length
-% p: steps per point plotted
-% tol: tolerance of error
-% Calls a one-step method such as trapstep.m
-% Example usage: tacoma([0 1000],[1 0 0.001 0],0.04,5)
+    % inter: tidsintervall 
+    % ic=[y(1,1) y(1,2) y(1,3) y(1,4)]: initialverdier 
+    % h: steglengde
+    % p: steg per punkt plottet
+    % tol: feiltoleranse
+% Kaller enstegs metode som trapstep.m eller fehlbergstep.m
+% Eksempel: tacoma([0 1000],[1 0 0.001 0],0.04,5)
 
 function tacoma(inter, ic, h, p, tol, W)
     clf % clear figure window
-    n = (inter(2) - inter(1)) / h; % Define number of steps
-    k = 1; 
-    y(1, :) = ic; % enter initial conds in y
-    t(1, :) = inter(1); % t values in right side ode
-    e(1, :) = 0.1; % error
-    startError = 0.1; % This has to be SAME as the error above
+    n = (inter(2) - inter(1)) / h; % Definer antall steg
+    k = 1; % Første steg initert
+    t_tolerance = 0.01; % Toleranse på hvor langt over inter(2) 
+    y(1, :) = ic; % legg inn initalverdier i systemet
+    t(1, :) = inter(1); % legg starttid
+    e(1, :) = 0.1; % feilkilde
+    h_sum = 1; % sum av steg
+    startError = e(1, :); 
     len = 6;
     initialAngle = y(1,3); %The initial angle from the initial conditions
     
@@ -48,30 +50,38 @@ function tacoma(inter, ic, h, p, tol, W)
     yPlotAngleMagnify = [];
     warning('off', 'all');
 
-    while k  < n
+    while h_sum+inter(1)  < inter(2)
         for i = 1:p
             k = k + 1;
             t(i+1,:) = t(i,:)+h;
+            h_sum = h_sum + h;
             [w, err] = fehlbergstep(t(i,:), y(i,:), h, W);
             y(i+1,:) = w; 
             e(i+1,:) = err;
-            h = h* 0.8 * (tol/e(i+1,:))^(1/4); % adjust step length based on error
-            n = (inter(2) - inter(1)) / h % Adjust number of steps in order to cover interval of ex. [0 1000]
-            while e(i+1,:) > tol % Try again until toleration is met
-                % Another try after adjustment
+            h = h* 0.8 * (tol/e(i+1,:))^(1/4); % juster steglengde basert på feilkilde
+            n = (inter(2) - inter(1)) / h; % endre på antall steg for å dekke tidsintervall
+            while e(i+1,:) > tol % prøv igjen så lenge feilkilde er større enn toleransen
+                % Nytt forsøk etter første justering
                 [w,err] = fehlbergstep(t(i,:), y(i,:), h, W);
                 y(i+1,:) = w;
                 e(i+1,:) = err;
-                
+                % Halvver steglengde om andre forsøk med fehlberg etter justering ikke funker
                 if e(i+1,:) > tol
-                    h = h / 2; % Reduce step size h to reduce error
+                    h = h / 2; 
                 end
             end
         end
-        
-        y(1, :) = y(p+1, :);
-        t(1, :) = t(p+1, :);
-        e(1, :) = e(p+1, :);
+        % Hopp et steg tilbake om summen av steg overskrider topp av
+        % intervall med for mye. Hvis ikke, behold verdier.
+        if h_sum - inter(2) > t_tolerance
+            y(1, :) = y(p, :);
+            t(1, :) = t(p, :);
+            e(1, :) = e(p, :);
+        else
+            y(1, :) = y(p+1, :);
+            t(1, :) = t(p+1, :);
+            e(1, :) = e(p+1, :);
+        end
         z1(k) = y(1, 1);
         z3(k) = y(1, 3);
         
