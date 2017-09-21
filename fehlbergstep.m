@@ -34,7 +34,7 @@ function [ Wout , E ] = fehlbergstep( t, y, h, W)
     Zout=y+h*(B(1,1)*s1+B(1,2)*s2+B(1,3)*s3+B(1,4)*s4+B(1,5)*s5+B(1,6)*s6);
     % Wout, 4. ordens løsning
     Wout=y+h*(B(2,1)*s1+B(2,2)*s2+B(2,3)*s3+B(2,4)*s4+B(2,5)*s5+B(2,6)*s6);
-    %E=norm( (h/360)*s1-(128*h/4275)*s3-(2197*h/75240)*s4+(h/50)*s5+(2*h/55)*s6,2);
+    % E=norm( (h/360)*s1-(128*h/4275)*s3-(2197*h/75240)*s4+(h/50)*s5+(2*h/55)*s6,2);
     E=abs(norm(Wout-Zout,2));
    
 end
