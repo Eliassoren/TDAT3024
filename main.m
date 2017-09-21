@@ -3,8 +3,8 @@
 
 runGraph = false; % Set this to true to run graph
 exercise3 = false;
-exercise4 = false;
-exercise6 = true;
+exercise4 = true;
+exercise6 = false;
 
 if (runGraph)
     tacoma([0 1000], [1 0 0.002 0], 25000, 5, 0.0000001, 63);
@@ -17,13 +17,13 @@ end
 
 % EXERCISE 4 -------------------------------------------------------
 if exercise4
-    windspeed = 200;  % starting windspeed
-    n = 0; % steps that will be iterated
+    windspeed = 60;  % starting windspeed
+    n = 20; % steps that will be iterated
     for i = 0: n
-        angularMagnification = tacomaComputing([0 1000], [1 0 0.000001 0], 25000, 5, 0.0000001, windspeed);
+        angularMagnification = tacomaComputing([0 1000], [1 0 0.000001 0], 25000, 5, 0.0000001, windspeed + i);
         if angularMagnification > 100
             angularMagnification
-            windspeed = windspeed
+            windspeed = windspeed + i
             break
         end
     end
@@ -32,13 +32,9 @@ end
 % EXERCISE 3 -------------------------------------------------------
 if exercise3
     windspeed = 50;  % starting windspeed
-    angularMagnificationTheta1 = tacomaComputing([0 1000], [1 0 0.001 0], 25000, 5, 0.0000001, windspeed);
-    angularMagnificationTheta1
-    angularMagnificationTheta2 = tacomaComputing([0 1000], [1 0 0.0001 0], 25000, 5, 0.0000001, windspeed);
-    angularMagnificationTheta2
-    angularMagnificationTheta3 = tacomaComputing([0 1000], [1 0 0.00001 0], 25000, 5, 0.0000001, windspeed);
-    angularMagnificationTheta3
-    angularMagnificationTheta3
+    angularMagnificationTheta1 = tacomaComputing([0 1000], [1 0 0.001 0], 25000, 5, 0.0000001, windspeed)
+    angularMagnificationTheta2 = tacomaComputing([0 1000], [1 0 0.0001 0], 25000, 5, 0.0000001, windspeed)
+    angularMagnificationTheta3 = tacomaComputing([0 1000], [1 0 0.00001 0], 25000, 5, 0.0000001, windspeed)
     % Is the angle magnification approx consistent. YES
 end
 
