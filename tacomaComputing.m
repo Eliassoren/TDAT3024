@@ -14,10 +14,10 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, n, p, tol, W)
     e(1, :) = 0.1; % error
     startError = 0.1; % This has to be SAME as the error above
     len = 6;
-    initialAngle = y(1,3); %The initial angle from the initial conditions
+    initialAngle = y(1,3); % The initial angle from the initial conditions
     
-    %These values are used for calibrating the graphs so the height
-    %is dynamicaly changed to fit for the current values
+    % These values are used for calibrating the graphs so the height
+    % is dynamicaly changed to fit for the current values
     yMax = 0; 
     yMaxYPosition = 0;
     yMaxError = 0;
@@ -25,12 +25,12 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, n, p, tol, W)
     yMaxErrorMagnify = 0;
     yMaxAngleMagnify = 0;
     
-    %This value is for finding if the error is magnified by 100 or more
+    % This value is for finding if the error is magnified by 100 or more
     errorMagnify = 0;
     angleMagnify = 0;
     
-    %These tables contain the values being plotted 
-    %into each graph and subgraph
+    % These tables contain the values being plotted 
+    % into each graph and subgraph
     xPlotAngleMagnify = [];
     yPlotAngleMagnify = [];
     warning('off', 'all');
@@ -63,9 +63,9 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, n, p, tol, W)
         c = len * cos(y(1, 3));
         s = len * sin(y(1, 3));
     
-    %Next subplot
+    % Next subplot
     angleMagnify = y(1,3) / initialAngle;
-    if abs(angleMagnify) > yMaxAngleMagnify %calibration
+    if abs(angleMagnify) > yMaxAngleMagnify % calibration
         yMaxAngleMagnify = abs(angleMagnify);
     end
    

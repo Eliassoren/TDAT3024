@@ -1,7 +1,7 @@
 % ([interval],initial conds,#of steps,steps per plotpoint,err
 % tolerance, Windspeed in km/h)
 
-runGraph = false; %Set this to true to run graph
+runGraph = false; % Set this to true to run graph
 exercise3 = false;
 exercise4 = false;
 exercise6 = true;
@@ -15,10 +15,10 @@ end
 % Exercise 4 (finding minimum windspeed inwhich a angular
 % magnification of 100 or more occurs
 
-%EXERCISE 4 -------------------------------------------------------
+% EXERCISE 4 -------------------------------------------------------
 if exercise4
-    windspeed = 200;  %starting windspeed
-    n = 0; %steps that will be iterated
+    windspeed = 200;  % starting windspeed
+    n = 0; % steps that will be iterated
     for i = 0: n
         angularMagnification = tacomaComputing([0 1000], [1 0 0.000001 0], 25000, 5, 0.0000001, windspeed);
         if angularMagnification > 100
@@ -29,9 +29,9 @@ if exercise4
     end
 end
 
-%EXERCISE 3 -------------------------------------------------------
+% EXERCISE 3 -------------------------------------------------------
 if exercise3
-    windspeed = 50;  %starting windspeed
+    windspeed = 50;  % starting windspeed
     angularMagnificationTheta1 = tacomaComputing([0 1000], [1 0 0.001 0], 25000, 5, 0.0000001, windspeed);
     angularMagnificationTheta1
     angularMagnificationTheta2 = tacomaComputing([0 1000], [1 0 0.0001 0], 25000, 5, 0.0000001, windspeed);
@@ -39,25 +39,25 @@ if exercise3
     angularMagnificationTheta3 = tacomaComputing([0 1000], [1 0 0.00001 0], 25000, 5, 0.0000001, windspeed);
     angularMagnificationTheta3
     angularMagnificationTheta3
-    %Is the angle magnification approx consistent. YES
+    % Is the angle magnification approx consistent. YES
 end
 
 
-%EXERCISE 6 --------------------------------------------------------
+% EXERCISE 6 --------------------------------------------------------
 xPlotPosition = [];
 yPlotPosition = [];
 if exercise6
     theta = 0.0000001;
-    windspeed = 150;  %starting windspeed
-    mf = 0.000000002; %multiplicationfactor
-    n = 10; %steps that will be iterated
+    windspeed = 150;  % starting windspeed
+    mf = 0.000000002; % multiplicationfactor
+    n = 10; % steps that will be iterated
     for i = 0: n
         angularMagnification = tacomaComputing([0 1000], [1 0 (theta + (i * mf)) 0], 25000, 5, 0.0000001, windspeed);
         xPlotPosition = [xPlotPosition (theta + (i * mf))];
         yPlotPosition = [yPlotPosition angularMagnification];
         graph = plot(xPlotPosition, yPlotPosition);
     end
-    %axis([ 0, t(1)+50, 0, yLim ]); %axis defined with calibration
-    grid %grid enabled
+    % axis([ 0, t(1)+50, 0, yLim ]); % axis defined with calibration
+    grid % grid enabled
     
 end
