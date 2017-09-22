@@ -3,7 +3,7 @@
 runGraph = false; % Set this to true to run graph
 exercise3 = false;
 exercise4 = false;
-exercise6 = true;
+exercise6 = false;
 
 if (runGraph)
     tacoma([0 1000], [1 0 0.002 0], 25000, 5, 0.0000001, 65, true);
@@ -18,13 +18,21 @@ if (exercise4)
     n = 20; % steg som vil bli iterert
 
     for (i = 0: n)
-        angularMagnification = tacoma([0 1000], [1 0 0.000001 0], 25000, 5, 0.0000001, windspeed + i, false);
+        angularMagnification = tacoma([0 1000], [1 0 0.000001 0], 25000, 5, 0.0000001, windspeed, false);
         if (angularMagnification > 100)
-            angularMagnification
-            windspeed = windspeed + i
             break
         end
+         windspeed = windspeed + 1;
     end
+    windspeed = windspeed - 5; % finnes det en bedre losning?
+    angularMagnification = tacoma([0 1000], [1 0 0.000001 0], 25000, 5, 0.0000001, windspeed, false);
+    while (angularMagnification < 100)
+        windspeed = windspeed + (0.5 * 10^-3)
+        angularMagnification = tacoma([0 1000], [1 0 0.000001 0], 25000, 5, 0.0000001, windspeed, false);
+    end
+    % Skriver ut losningen
+    angularMagnification
+    windspeed
 end
 
 % EXERCISE 3 -------------------------------------------------------
