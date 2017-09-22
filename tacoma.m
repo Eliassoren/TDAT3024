@@ -20,7 +20,9 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, n, p, tol, W, runGraph)
     y(1, :) = ic; % Legg inn initalverdier i systemet
     t(1, :) = inter(1); % Legg starttid
     e(1, :) = 0.1; % Feilkilde
-    h_sum = 1; % Sum av steg
+    h_sum = 0; % Sum av steg
+    safe_epsilon = 0.00000001;
+    o = 4; % Orden på fehlberg-approksimering w. Brukes i variabel steglengde
     startError = e(1, :); 
     len = 6;
     initialAngle = y(1,3); % The initial angle from the initial conditions
@@ -62,13 +64,13 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, n, p, tol, W, runGraph)
             t(i+1,:) = t(i,:)+h;
             y(i+1,:) = w; 
             e(i+1,:) = err;
-            h = h* 0.8 * (tol/e(i+1,:))^(1/4); % Juster steglengde basert på feilkilde
-            while (e(i+1,:) > tol) % Proev igjen så lenge feilkilde er stoerre enn toleransen
-                % Nytt forsÃ¸k etter fÃ¸rste justering
+            h = h* 0.8 * (tol*norm(y(i,:),2)/e(i,:))^(1/o+1); % Juster steglengde basert på feilkilde
+            while (e(i,:) > tol) % Proev igjen så lenge feilkilde er stoerre enn toleransen
+                % Nytt forsoek etter foerste justering
                 [w,err] = fehlbergstep(t(i,:), y(i,:), h, W);
                 y(i+1,:) = w;
                 e(i+1,:) = err;
-                % Halvver steglengde om andre forsÃ¸k med fehlberg etter justering ikke funker
+                % Halvver steglengde om andre forsoek med fehlberg etter justering ikke funker
                 if (e(i+1,:) > tol)
                     h = h / 2; 
                 end
