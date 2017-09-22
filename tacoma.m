@@ -7,17 +7,16 @@
     % tol: feiltoleranse
 % Kaller enstegs metode som trapstep.m eller fehlbergstep.m
 % Eksempel: tacoma([0 1000],[1 0 0.001 0],0.04,5)
-
-function [Windspeed] = tacoma(inter, ic, n, p, tol, W)
+function [] = tacoma(inter, ic, n, p, tol, W)
 
     clf % clear figure window
-    n = (inter(2) - inter(1)) / h; % Definer antall steg
-    k = 1; % Første steg initert
-    t_tolerance = 0.01; % Toleranse på hvor langt over inter(2) 
-    y(1, :) = ic; % legg inn initalverdier i systemet
-    t(1, :) = inter(1); % legg starttid
-    e(1, :) = 0.1; % feilkilde
-    h_sum = 1; % sum av steg
+    h = (inter(2) - inter(1)) / n; % Definer antall steg
+    k = 1; % Foerste steg initert
+    t_tolerance = 0.01; % Toleranse paa hvor langt over inter(2) 
+    y(1, :) = ic; % Legg inn initalverdier i systemet
+    t(1, :) = inter(1); % Legg starttid
+    e(1, :) = 0.1; % Feilkilde
+    h_sum = 1; % Sum av steg
     startError = e(1, :); 
     len = 6;
     initialAngle = y(1,3); % The initial angle from the initial conditions
@@ -50,31 +49,30 @@ function [Windspeed] = tacoma(inter, ic, n, p, tol, W)
     xPlotAngleMagnify = [];
     yPlotAngleMagnify = [];
     warning('off', 'all');
-
-    while h_sum+inter(1)  < inter(2)
-        for i = 1:p
+    % Fehlberg med variabel steglengde
+    while (h_sum+inter(1)  < inter(2))
+        for (i = 1:p)
             k = k + 1;
+            h_sum = h_sum + h; % P� grunn av variabel steglengde, summer alle stegene
+            [w, err] = fehlbergstep(t(i,:), y(i,:), h, W); % Fehlberg returnerer en tabell med beregnet y-verdi w og feilkilde err.
             t(i+1,:) = t(i,:)+h;
-            h_sum = h_sum + h;
-            [w, err] = fehlbergstep(t(i,:), y(i,:), h, W);
             y(i+1,:) = w; 
             e(i+1,:) = err;
-            h = h* 0.8 * (tol/e(i+1,:))^(1/4); % juster steglengde basert på feilkilde
-            n = (inter(2) - inter(1)) / h; % endre på antall steg for å dekke tidsintervall
-            while e(i+1,:) > tol % prøv igjen så lenge feilkilde er større enn toleransen
+            h = h* 0.8 * (tol/e(i+1,:))^(1/4); % Juster steglengde basert p� feilkilde
+            while (e(i+1,:) > tol) % Proev igjen s� lenge feilkilde er stoerre enn toleransen
                 % Nytt forsøk etter første justering
                 [w,err] = fehlbergstep(t(i,:), y(i,:), h, W);
                 y(i+1,:) = w;
                 e(i+1,:) = err;
                 % Halvver steglengde om andre forsøk med fehlberg etter justering ikke funker
-                if e(i+1,:) > tol
+                if (e(i+1,:) > tol)
                     h = h / 2; 
                 end
             end
         end
         % Hopp et steg tilbake om summen av steg overskrider topp av
-        % intervall med for mye. Hvis ikke, behold verdier.
-        if h_sum - inter(2) > t_tolerance
+        % intervall med for mye. Hvis ikke, behold verdier fra siste iterasjon.
+        if (h_sum - inter(2) > t_tolerance)
             y(1, :) = y(p, :);
             t(1, :) = t(p, :);
             e(1, :) = e(p, :);
@@ -109,7 +107,7 @@ function [Windspeed] = tacoma(inter, ic, n, p, tol, W)
     
     drawnow;
     subplot(3, 3, 2); % Angle subgraph
-    if abs(y(1,3)) > yMax
+    if (abs(y(1,3)) > yMax)
         yMax = abs(y(1,3)); % Calibrating the graph
     end
     
@@ -132,13 +130,13 @@ function [Windspeed] = tacoma(inter, ic, n, p, tol, W)
         pause(h)
         
     % if the window is closed the loop exits
-    if ~ishghandle(graph) || ~ishghandle(road)
+    if (~ishghandle(graph) || ~ishghandle(road))
         return 
     end
     
     % Next subplot
     subplot(3,3,3); % Y position
-    if abs(y(1,1)) > yMaxYPosition
+    if (abs(y(1,1)) > yMaxYPosition)
         yMaxYPosition = abs(y(1,1)); % Calibration
     end
     
@@ -160,7 +158,7 @@ function [Windspeed] = tacoma(inter, ic, n, p, tol, W)
     
     % Next subplot
     subplot(3,3,4); % ERROR
-    if abs(e(1,1)) > yMaxError
+    if (abs(e(1,1)) > yMaxError)
         yMaxError = abs(e(1,1)); % Calibration
     end
     
@@ -183,7 +181,7 @@ function [Windspeed] = tacoma(inter, ic, n, p, tol, W)
     % Next subplot
     s5 = subplot(3,3,5); % STEP LENGTH
     subplot(s5, 'stepLength', 'm');
-    if abs(h) > yMaxStepLength % calibration
+    if (abs(h) > yMaxStepLength) % calibration
         yMaxStepLength = abs(h);
     end
     
@@ -206,7 +204,7 @@ function [Windspeed] = tacoma(inter, ic, n, p, tol, W)
     % Next subplot
     subplot(3,3,6); % ERROR MAGNIFICATION
     errorMagnify = e(1,1) / startError;
-    if abs(errorMagnify) > yMaxErrorMagnify % calibration
+    if (abs(errorMagnify) > yMaxErrorMagnify) % calibration
         yMaxErrorMagnify = abs(errorMagnify);
     end
     
@@ -229,11 +227,11 @@ function [Windspeed] = tacoma(inter, ic, n, p, tol, W)
     % Next subplot
     subplot(3,3,7); % ANGLE MAGNIFICATION
     angleMagnify = y(1,3) / initialAngle;
-    if abs(angleMagnify) > yMaxAngleMagnify % calibration
+    if (abs(angleMagnify) > yMaxAngleMagnify) % calibration
         yMaxAngleMagnify = abs(angleMagnify);
     end
     
-    if angleMagnify >= 100
+    if (angleMagnify >= 100)
         a = 'MAGNIFICATION REACHED 100'
     end
     
