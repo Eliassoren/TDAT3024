@@ -5,8 +5,10 @@
     % h: steglengde
     % p: steg per punkt plottet
     % tol: feiltoleranse
+    % W: vindhastighet i km/h
+    % runGraph: Kjør enten grafing eller computing
 % Kaller enstegs metode som trapstep.m eller fehlbergstep.m
-% Eksempel: tacoma([0 1000],[1 0 0.001 0],0.04,5)
+% Eksempel: tacoma([0 1000],[1 0 0.001 0],0.04,5,true)
 function [yMaxAngleMagnify] = tacoma(inter, ic, n, p, tol, W, runGraph)
     
     if (runGraph)
