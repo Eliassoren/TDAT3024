@@ -1,8 +1,8 @@
-% ([intervall],initialverdier[y y' theta theta'],steglengde,steg per plotpoint, feilkilde, toleranse, vindhastighet km/h)
+% ([intervall],initialverdier[y y' theta theta'],antall steg,steg per plotpoint, toleranse, vindhastighet km/h)
 
-runGraph = false; % Set this to true to run graph
+runGraph = true; % Set this to true to run graph
 exercise3 = false;
-exercise4 = true;
+exercise4 = false;
 exercise6 = false;
 
 if (runGraph)
@@ -13,13 +13,13 @@ end
 % magnification of 100 or more occurs
 
 % EXERCISE 4 -------------------------------------------------------
-if exercise4
+if (exercise4)
     windspeed = 60;  % start vindhastighet
     n = 20; % steg som vil bli iterert
 
-    for i = 0: n
+    for (i = 0: n)
         angularMagnification = tacomaComputing([0 1000], [1 0 0.000001 0], 25000, 5, 0.0000001, windspeed + i);
-        if angularMagnification > 100
+        if (angularMagnification > 100)
             angularMagnification
             windspeed = windspeed + i
             break
@@ -28,7 +28,7 @@ if exercise4
 end
 
 % EXERCISE 3 -------------------------------------------------------
-if exercise3
+if (exercise3)
     windspeed = 50;  % starting windspeed
     angularMagnificationTheta1 = tacomaComputing([0 1000], [1 0 0.001 0], 25000, 5, 0.0000001, windspeed)
     angularMagnificationTheta2 = tacomaComputing([0 1000], [1 0 0.0001 0], 25000, 5, 0.0000001, windspeed)
@@ -40,12 +40,12 @@ end
 % EXERCISE 6 --------------------------------------------------------
 xPlotPosition = [];
 yPlotPosition = [];
-if exercise6
+if (exercise6)
     theta = 0.0000001;
     windspeed = 150;  % starting windspeed
     mf = 0.000000002; % multiplicationfactor
     n = 10; % steps that will be iterated
-    for i = 0: n
+    for (i = 0: n)
         angularMagnification = tacomaComputing([0 1000], [1 0 (theta + (i * mf)) 0], 25000, 5, 0.0000001, windspeed);
         xPlotPosition = [xPlotPosition (theta + (i * mf))];
         yPlotPosition = [yPlotPosition angularMagnification];

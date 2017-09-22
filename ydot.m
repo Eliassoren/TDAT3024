@@ -10,6 +10,7 @@ function ydot = ydot(t, system, W)
     omega = 2 * pi * 38 / 60; % Vinkel på brua
     K = 1000; % Fjærkonstant i Hookes lov, 1000N
     m = 2500; % Massen til en fot med vei, 2500kg
+    
     y = system(1);
     yDerivert = system(2);
     theta = system(3);
