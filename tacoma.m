@@ -7,17 +7,16 @@
     % tol: feiltoleranse
 % Kaller enstegs metode som trapstep.m eller fehlbergstep.m
 % Eksempel: tacoma([0 1000],[1 0 0.001 0],0.04,5)
-
-function [Windspeed] = tacoma(inter, ic, n, p, tol, W)
+function [] = tacoma(inter, ic, n, p, tol, W)
 
     clf % clear figure window
     h = (inter(2) - inter(1)) / n; % Definer antall steg
-    k = 1; % F√∏rste steg initert
-    t_tolerance = 0.01; % Toleranse p√• hvor langt over inter(2) 
-    y(1, :) = ic; % legg inn initalverdier i systemet
-    t(1, :) = inter(1); % legg starttid
-    e(1, :) = 0.1; % feilkilde
-    h_sum = 1; % sum av steg
+    k = 1; % Foerste steg initert
+    t_tolerance = 0.01; % Toleranse paa hvor langt over inter(2) 
+    y(1, :) = ic; % Legg inn initalverdier i systemet
+    t(1, :) = inter(1); % Legg starttid
+    e(1, :) = 0.1; % Feilkilde
+    h_sum = 1; % Sum av steg
     startError = e(1, :); 
     len = 6;
     initialAngle = y(1,3); % The initial angle from the initial conditions
@@ -54,13 +53,13 @@ function [Windspeed] = tacoma(inter, ic, n, p, tol, W)
     while (h_sum+inter(1)  < inter(2))
         for (i = 1:p)
             k = k + 1;
-            h_sum = h_sum + h;
-            [w, err] = fehlbergstep(t(i,:), y(i,:), h, W); % fehlberg returnerer en tabell med beregnet y-verdi w og feilkilde err.
+            h_sum = h_sum + h; % PÂ grunn av variabel steglengde, summer alle stegene
+            [w, err] = fehlbergstep(t(i,:), y(i,:), h, W); % Fehlberg returnerer en tabell med beregnet y-verdi w og feilkilde err.
             t(i+1,:) = t(i,:)+h;
             y(i+1,:) = w; 
             e(i+1,:) = err;
-            h = h* 0.8 * (tol/e(i+1,:))^(1/4); % juster steglengde basert pÂ feilkilde
-            while (e(i+1,:) > tol) % pr√∏v igjen sÂ lenge feilkilde er st¯rre enn toleransen
+            h = h* 0.8 * (tol/e(i+1,:))^(1/4); % Juster steglengde basert pÂ feilkilde
+            while (e(i+1,:) > tol) % Proev igjen sÂ lenge feilkilde er stoerre enn toleransen
                 % Nytt fors√∏k etter f√∏rste justering
                 [w,err] = fehlbergstep(t(i,:), y(i,:), h, W);
                 y(i+1,:) = w;
