@@ -9,18 +9,18 @@
     % runGraph: Kjør enten grafing eller computing
 % Kaller enstegs metode som trapstep.m eller fehlbergstep.m
 % Eksempel: tacoma([0 1000],[1 0 0.001 0],0.04,5,true)
-function [yMaxAngleMagnify] = tacoma(inter, ic, n, p, tol, W, runGraph)
+function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, runGraph)
     
     if (runGraph)
         clf % clear figure window
     end
-    h = (inter(2) - inter(1)) / n; % Definer antall steg
     k = 1; % Foerste steg initert
     t_tolerance = 0.01; % Toleranse paa hvor langt over inter(2) 
+    h = h0; % Foerste steglengde
     y(1, :) = ic; % Legg inn initalverdier i systemet
     t(1, :) = inter(1); % Legg starttid
     e(1, :) = 0.1; % Feilkilde
-    h_sum = 1; % Sum av steg
+    h_sum = 0; % Sum av steg
     startError = e(1, :); 
     len = 6;
     initialAngle = y(1,3); % The initial angle from the initial conditions

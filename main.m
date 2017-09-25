@@ -6,7 +6,7 @@ exercise4 = false;
 exercise6 = true;
 
 if (runGraph)
-    tacoma([0 1000], [1 0 0.002 0], 25000, 5, 0.0000001, 65, true);
+    tacoma([0 1000], [1 0 0.002 0], 0.04, 5, 0.0000001, 65, true);
 end
 
 % Exercise 4 (finding minimum windspeed inwhich a angular
