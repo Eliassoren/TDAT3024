@@ -25,6 +25,10 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, runGraph)
     len = 6;
     initialAngle = y(1,3); % The initial angle from the initial conditions
     
+    yMaxAngleMagnify = 0; % Denne variabelen brukes i computing og er derfor definert her
+    
+    if (runGraph)
+    
     % These values are used for calibrating the graphs so the height
     % is dynamicaly changed to fit for the current values
     yMax = 0; 
@@ -32,7 +36,6 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, runGraph)
     yMaxError = 0;
     yMaxStepLength = 0;
     yMaxErrorMagnify = 0;
-    yMaxAngleMagnify = 0;
     
     % This value is for finding if the error is magnified by 100 or more
     errorMagnify = 0;
@@ -76,6 +79,8 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, runGraph)
     rcable = line(figureAxes, 'color', 'r', 'LineStyle', ' - ', 'LineWidth', 1, ...
     'erase', 'xor', 'xdata', [], 'ydata', []);
     
+    end
+    
     while h_sum+inter(1)  < inter(2)
         for i = 1:p
             k = k + 1;
@@ -112,6 +117,11 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, runGraph)
         
         c = len * cos(y(1, 3));
         s = len * sin(y(1, 3));
+        
+        angleMagnify = y(1,3) / initialAngle;
+        if (abs(angleMagnify) > yMaxAngleMagnify) % calibration
+            yMaxAngleMagnify = abs(angleMagnify) - 100;
+        end
         
         if (runGraph)
             set(road, 'xdata', [-c c], 'ydata', [-s-y(1, 1) s-y(1, 1)])
@@ -192,10 +202,6 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, runGraph)
 
             % Next subplot
             % ANGLE MAGNIFICATION
-            angleMagnify = y(1,3) / initialAngle;
-            if (abs(angleMagnify) > yMaxAngleMagnify) % calibration
-                yMaxAngleMagnify = abs(angleMagnify);
-            end
             
             % These points will be drawn
             yPlotAngleMagnify = [yPlotAngleMagnify angleMagnify];
