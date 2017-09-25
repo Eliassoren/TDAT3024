@@ -192,7 +192,11 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, runGraph)
 
             % Next subplot
             % ANGLE MAGNIFICATION
-
+            angleMagnify = y(1,3) / initialAngle;
+            if (abs(angleMagnify) > yMaxAngleMagnify) % calibration
+                yMaxAngleMagnify = abs(angleMagnify);
+            end
+            
             % These points will be drawn
             yPlotAngleMagnify = [yPlotAngleMagnify angleMagnify];
 
