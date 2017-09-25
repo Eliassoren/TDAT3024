@@ -9,8 +9,7 @@
     % runGraph: Kjør enten grafing eller computing
 % Kaller enstegs metode som trapstep.m eller fehlbergstep.m
 % Eksempel: tacoma([0 1000],[1 0 0.001 0],0.04,5,true)
-function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, runGraph)
-    
+function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, omega, runGraph)
     if (runGraph)
         clf % clear figure window
     end
@@ -80,17 +79,17 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, runGraph)
         for i = 1:p
             k = k + 1;
             h_sum = h_sum + h; % På grunn av variabel steglengde, summer alle stegene
-            [w, err] = fehlbergstep(t(i,:), y(i,:), h, W); % Fehlberg returnerer en tabell med beregnet y-verdi w og feilkilde err.
+            [w, err] = fehlbergstep(t(i,:), y(i,:), h, W, omega); % Fehlberg returnerer en tabell med beregnet y-verdi w og feilkilde err.
             t(i+1,:) = t(i,:)+h;
             y(i+1,:) = w; 
             e(i+1,:) = err;
             h = h* 0.8 * (tol/e(i+1,:))^(1/4); % Juster steglengde basert på feilkilde
             while (e(i+1,:) > tol) % Proev igjen så lenge feilkilde er stoerre enn toleransen
-                % Nytt forsÃ¸k etter fÃ¸rste justering
-                [w,err] = fehlbergstep(t(i,:), y(i,:), h, W);
+                % Nytt forsøk etter første justering
+                [w,err] = fehlbergstep(t(i,:), y(i,:), h, W, omega);
                 y(i+1,:) = w;
                 e(i+1,:) = err;
-                % Halvver steglengde om andre forsÃ¸k med fehlberg etter justering ikke funker
+                % Halvver steglengde om andre forsøk med fehlberg etter justering ikke funker
                 if (e(i+1,:) > tol)
                     h = h / 2; 
                 end
