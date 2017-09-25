@@ -5,11 +5,15 @@
     % h: steglengde
     % p: steg per punkt plottet
     % tol: feiltoleranse
+    % W: vindhastighet i km/h
+    % runGraph: Kjør enten grafing eller computing
 % Kaller enstegs metode som trapstep.m eller fehlbergstep.m
-% Eksempel: tacoma([0 1000],[1 0 0.001 0],0.04,5)
-function [] = tacoma(inter, ic, n, p, tol, W)
-
-    clf % clear figure window
+% Eksempel: tacoma([0 1000],[1 0 0.001 0],0.04,5,true)
+function [yMaxAngleMagnify] = tacoma(inter, ic, n, p, tol, W, runGraph)
+    
+    if (runGraph)
+        clf % clear figure window
+    end
     h = (inter(2) - inter(1)) / n; % Definer antall steg
     k = 1; % Foerste steg initert
     t_tolerance = 0.01; % Toleranse paa hvor langt over inter(2) 
@@ -109,148 +113,101 @@ function [] = tacoma(inter, ic, n, p, tol, W)
         c = len * cos(y(1, 3));
         s = len * sin(y(1, 3));
         
-        set(road, 'xdata', [-c c], 'ydata', [-s-y(1, 1) s-y(1, 1)])
-        set(lcable, 'xdata', [-c -c], 'ydata', [-s-y(1, 1) 8])
-        set(rcable, 'xdata', [c c], 'ydata', [s-y(1, 1) 8])
+        if (runGraph)
+            set(road, 'xdata', [-c c], 'ydata', [-s-y(1, 1) s-y(1, 1)])
+            set(lcable, 'xdata', [-c -c], 'ydata', [-s-y(1, 1) 8])
+            set(rcable, 'xdata', [c c], 'ydata', [s-y(1, 1) 8])
     
-    % Angle subgraph
-    if (abs(y(1,3)) > yMax)
-        yMax = abs(y(1,3)); % Calibrating the graph
-    end
-    
-    % Graph index is calibrated by this value
-    yLim = (yMax + yMax*0.2); 
-    
-    % The values for the current iteration are saved
-    xPlot = [xPlot t(1)];
-    yPlot = [yPlot y(1,3)];
-    
-    %hold(angleGraphAxes, 'on');
-    %graph = plot(angleGraphAxes, t(1), y(1, 3), '*'); % The graph plots the points given
-    %hold(angleGraphAxes, 'off');
-    graph = plot(angleGraphAxes, xPlot, yPlot); % The graph plots the points given
-    title(angleGraphAxes, 'Angle'); % Subgraph title
-    xlabel(angleGraphAxes, 'Time (s)') % x-axis label
-    ylabel(angleGraphAxes, 'Angle (radians)') % y-axis label
-    grid(angleGraphAxes);
-    % The axis is drawn given the calibration value calculated earlier
-    % axis(angleGraphAxes, [ 0, t(1)+50, -yLim, yLim ]); 
-    
-    % Next subplot
-    if (abs(y(1,1)) > yMaxYPosition)
-        yMaxYPosition = abs(y(1,1)); % Calibration
-    end
-    
-    yLim = (yMaxYPosition); % Calibration value
-    
-    % These points will be plotted
-    yPlotPosition = [yPlotPosition y(1,1)];
-    
-    % The graph is drawn
-    graph = plot(bridgePositionAxes, xPlot, yPlotPosition);
-    
-    title(bridgePositionAxes, 'Y-position of bridge'); % Title set, has to be done after graph
-    xlabel(bridgePositionAxes, 'Time (s)') % x-axis label
-    ylabel(bridgePositionAxes, 'height (m)') % y-axis label
-    grid(bridgePositionAxes);
-    % axis([ 0, t(1)+50, -yLim, yLim ]); % axis defined with calibration
-    
-    % Next subplot
-    % ERROR
-    if (abs(e(1,1)) > yMaxError)
-        yMaxError = abs(e(1,1)); % Calibration
-    end
-    
-    yLim = (yMaxError + yMaxError*0.2); % Calibration value
-    
-    % Points for plotting
-    yPlotError = [yPlotError e(1,1)];
-    
-    % Plot drawn
-    graph = plot(errorPlotAxes, xPlot, yPlotError);
-    
-    title(errorPlotAxes, 'Error'); % Title of graph
-    xlabel(errorPlotAxes, 'Time (s)') % x-axis label
-    ylabel(errorPlotAxes, 'Error (m)') % y-axis label
-    grid(errorPlotAxes);
-    
-    % axis([ 0, t(1)+50, 0, yLim ]); % axis defined with calibration
-    
-    % Next subplot
-    % STEP LENGTH
+            % Angle subgraph
+            % The values for the current iteration are saved
+            xPlot = [xPlot t(1)];
+            yPlot = [yPlot y(1,3)];
 
-    if (abs(h) > yMaxStepLength) % calibration
-        yMaxStepLength = abs(h);
+            %hold(angleGraphAxes, 'on');
+            %graph = plot(angleGraphAxes, t(1), y(1, 3), '*'); % The graph plots the points given
+            %hold(angleGraphAxes, 'off');
+            graph = plot(angleGraphAxes, xPlot, yPlot); % The graph plots the points given
+            title(angleGraphAxes, 'Angle'); % Subgraph title
+            xlabel(angleGraphAxes, 'Time (s)') % x-axis label
+            ylabel(angleGraphAxes, 'Angle (radians)') % y-axis label
+            grid(angleGraphAxes);
+
+            % Next subplot
+            % These points will be plotted
+            yPlotPosition = [yPlotPosition y(1,1)];
+
+            % The graph is drawn
+            graph = plot(bridgePositionAxes, xPlot, yPlotPosition);
+
+            title(bridgePositionAxes, 'Y-position of bridge'); % Title set, has to be done after graph
+            xlabel(bridgePositionAxes, 'Time (s)') % x-axis label
+            ylabel(bridgePositionAxes, 'height (m)') % y-axis label
+            grid(bridgePositionAxes);
+
+            % Next subplot
+            % ERROR
+            % Points for plotting
+            yPlotError = [yPlotError e(1,1)];
+
+            % Plot drawn
+            graph = plot(errorPlotAxes, xPlot, yPlotError);
+
+            title(errorPlotAxes, 'Error'); % Title of graph
+            xlabel(errorPlotAxes, 'Time (s)') % x-axis label
+            ylabel(errorPlotAxes, 'Error (m)') % y-axis label
+            grid(errorPlotAxes);
+
+            % Next subplot
+            % STEP LENGTH
+            
+            % These points will be drawn
+            yPlotStepLength = [yPlotStepLength h];
+
+            % Points get drawn
+            graph = plot(stepLengthAxes, xPlot, yPlotStepLength);
+
+            title(stepLengthAxes, 'Steplength'); % Title
+            xlabel(stepLengthAxes, 'Time (s)') % x-axis label
+            ylabel(stepLengthAxes, 'Step length') % y-axis label
+
+            %axis([ 0, t(1)+50, 0, yLim ]); % axis defined with calibration
+            grid(stepLengthAxes); % grid enabled
+
+            % Next subplot
+            % ERROR MAGNIFICATION
+            errorMagnify = e(1,1) / startError;
+
+            % These points will be drawn
+            yPlotErrorMagnify = [yPlotErrorMagnify errorMagnify];
+
+            % Points get drawn
+            graph = plot(errorMagnificationAxes, xPlot, yPlotErrorMagnify);
+
+            title(errorMagnificationAxes, 'Error magnification'); % Title
+            xlabel(errorMagnificationAxes, 'Time (s)') % x-axis label
+            ylabel(errorMagnificationAxes, 'Error magnification') % y-axis label
+
+            %axis([ 0, t(1)+50, 0, yLim ]); % axis defined with calibration
+            grid(errorMagnificationAxes); % grid enabled
+
+            % Next subplot
+            % ANGLE MAGNIFICATION
+
+            % These points will be drawn
+            yPlotAngleMagnify = [yPlotAngleMagnify angleMagnify];
+
+            % Points get drawn
+            graph = plot(angleMagnificationPlotAxes, xPlot, yPlotAngleMagnify);
+
+            title(angleMagnificationPlotAxes, 'Angle magnification'); % Title
+            xlabel(angleMagnificationPlotAxes, 'Time (s)') % x-axis label
+            ylabel(angleMagnificationPlotAxes, 'Angle magnification') % y-axis label
+
+            %axis([ 0, t(1)+50, -yLim, yLim ]); % axis defined with calibration
+            grid(angleMagnificationPlotAxes); % grid enabled
+
+            drawnow limitrate;
+            pause(h);
+        end
     end
-    
-    yLim = (yMaxStepLength + yMaxStepLength*0.2);% calibration value
-    
-    % These points will be drawn
-    yPlotStepLength = [yPlotStepLength h];
-    
-    % Points get drawn
-    graph = plot(stepLengthAxes, xPlot, yPlotStepLength);
-    
-    title(stepLengthAxes, 'Steplength'); % Title
-    xlabel(stepLengthAxes, 'Time (s)') % x-axis label
-    ylabel(stepLengthAxes, 'Step length') % y-axis label
-    
-    %axis([ 0, t(1)+50, 0, yLim ]); % axis defined with calibration
-    grid(stepLengthAxes); % grid enabled
-    
-    % Next subplot
-    % ERROR MAGNIFICATION
-    errorMagnify = e(1,1) / startError;
-    if (abs(errorMagnify) > yMaxErrorMagnify) % calibration
-        yMaxErrorMagnify = abs(errorMagnify);
-    end
-    
-    yLim = (yMaxErrorMagnify + yMaxErrorMagnify*0.2);% calibration value
-    
-    % These points will be drawn
-    yPlotErrorMagnify = [yPlotErrorMagnify errorMagnify];
-    
-    % Points get drawn
-    graph = plot(errorMagnificationAxes, xPlot, yPlotErrorMagnify);
-    
-    title(errorMagnificationAxes, 'Error magnification'); % Title
-    xlabel(errorMagnificationAxes, 'Time (s)') % x-axis label
-    ylabel(errorMagnificationAxes, 'Error magnification') % y-axis label
-    
-    %axis([ 0, t(1)+50, 0, yLim ]); % axis defined with calibration
-    grid(errorMagnificationAxes); % grid enabled
-    
-    % Next subplot
-    % ANGLE MAGNIFICATION
-    angleMagnify = y(1,3) / initialAngle;
-    if (abs(angleMagnify) > yMaxAngleMagnify) % calibration
-        yMaxAngleMagnify = abs(angleMagnify);
-    end
-    
-    if (angleMagnify >= 100)
-        a = 'MAGNIFICATION REACHED 100'
-    end
-    
-    yLim = (yMaxAngleMagnify + yMaxAngleMagnify*0.2);% calibration value
-    
-    % These points will be drawn
-    yPlotAngleMagnify = [yPlotAngleMagnify angleMagnify];
-    
-    % Points get drawn
-    graph = plot(angleMagnificationPlotAxes, xPlot, yPlotAngleMagnify);
-    
-    title(angleMagnificationPlotAxes, 'Angle magnification'); % Title
-    xlabel(angleMagnificationPlotAxes, 'Time (s)') % x-axis label
-    ylabel(angleMagnificationPlotAxes, 'Angle magnification') % y-axis label
-    
-    %axis([ 0, t(1)+50, -yLim, yLim ]); % axis defined with calibration
-    grid(angleMagnificationPlotAxes); % grid enabled
-    
-    drawnow limitrate;
-    pause(h);
-    
-    % if the window is closed the loop exits
-    if (~ishghandle(graph) || ~ishghandle(road))
-        return 
-    end
-    end
+end
