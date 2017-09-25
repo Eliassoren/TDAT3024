@@ -1,12 +1,12 @@
 % ([intervall],initialverdier[y y' theta theta'],antall steg,steg per plotpoint, toleranse, vindhastighet km/h, boolean kjor grafing eller computing)
 
-runGraph = false; % Set this to true to run graph
+runGraph = true; % Set this to true to run graph
 exercise3 = false;
 exercise4 = false;
 exercise6 = false;
 
 if (runGraph)
-    tacoma([0 1000], [1 0 0.002 0], 25000, 5, 0.0000001, 65, true);
+    tacoma([0 500], [0 0 0.001 0], 10000, 5, 1* 10^-6, 58.99, false)
 end
 
 % Exercise 4 (finding minimum windspeed inwhich a angular
@@ -14,21 +14,21 @@ end
 
 % EXERCISE 4 -------------------------------------------------------
 if (exercise4)
-    windspeed = 60;  % start vindhastighet
+    windspeed = 50;  % start vindhastighet
     n = 20; % steg som vil bli iterert
 
     for (i = 0: n)
-        angularMagnification = tacoma([0 1000], [1 0 0.000001 0], 25000, 5, 0.0000001, windspeed, false);
+        angularMagnification = tacoma([0 1000], [0 0 0.001 0], 25000, 5, 1 * 10^-6, windspeed, false);
         if (angularMagnification > 100)
             break
         end
          windspeed = windspeed + 1;
     end
     windspeed = windspeed - 5; % finnes det en bedre losning?
-    angularMagnification = tacoma([0 1000], [1 0 0.000001 0], 25000, 5, 0.0000001, windspeed, false);
+    angularMagnification = tacoma([0 1000], [0 0 0.001 0], 25000, 5, 1 * 10^-6, windspeed, false);
     while (angularMagnification < 100)
-        windspeed = windspeed + (0.5 * 10^-3)
-        angularMagnification = tacoma([0 1000], [1 0 0.000001 0], 25000, 5, 0.0000001, windspeed, false);
+        windspeed = windspeed + (0.5 * 10^-3);
+        angularMagnification = tacoma([0 1000], [0 0 0.001 0], 25000, 5, 1 * 10^-6, windspeed, false);
     end
     % Skriver ut losningen
     angularMagnification
