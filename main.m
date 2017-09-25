@@ -1,8 +1,8 @@
 % ([intervall],initialverdier[y y' theta theta'],antall steg,steg per plotpoint, toleranse, vindhastighet km/h, boolean kjor grafing eller computing)
 
 runGraph = false; % Set this to true to run graph
-exercise3 = false;
-exercise4 = true;
+exercise3 = true;
+exercise4 = false;
 exercise6 = false;
 
 if (runGraph)
@@ -23,10 +23,10 @@ end
 
 % EXERCISE 3 -------------------------------------------------------
 if (exercise3)
-    windspeed = 50;  % starting windspeed
-    angularMagnificationTheta1 = tacoma([0 1000], [1 0 0.001 0], 25000, 5, 0.0000001, windspeed, false)
-    angularMagnificationTheta2 = tacoma([0 1000], [1 0 0.0001 0], 25000, 5, 0.0000001, windspeed, false)
-    angularMagnificationTheta3 = tacoma([0 1000], [1 0 0.00001 0], 25000, 5, 0.0000001, windspeed, false)
+    windspeed = 60;  % starting windspeed
+    angularMagnificationTheta1 = 100 + tacoma([0 500], [0 0 0.001 0], 0.04 ,5, 0.0000001, windspeed, false)
+    angularMagnificationTheta2 = 100 + tacoma([0 500], [0 0 0.0001 0], 0.04 ,5, 0.0000001, windspeed, false)
+    angularMagnificationTheta3 = 100 + tacoma([0 500], [0 0 0.00001 0], 0.04 ,5, 0.0000001, windspeed, false)
     % Is the angle magnification approx consistent. YES
 end
 
