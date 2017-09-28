@@ -17,34 +17,19 @@ switch (exercise)
         
     % Exercise 3
     case 3
-        windspeed = 50;  % starting windspeed
-        angularMagnificationTheta1 = tacoma([0 1000], [1 0 0.001 0], 25000, 5, 0.0000001, windspeed, normalOmega, false)
-        angularMagnificationTheta2 = tacoma([0 1000], [1 0 0.0001 0], 25000, 5, 0.0000001, windspeed, normalOmega, false)
-        angularMagnificationTheta3 = tacoma([0 1000], [1 0 0.00001 0], 25000, 5, 0.0000001, windspeed, normalOmega, false)
+        windspeed = 55;  % starting windspeed
+        angularMagnificationTheta1 = 100 + tacoma([0 500], [0 0 0.001 0], 0.04 ,5, 0.0000001, windspeed, false)
+        angularMagnificationTheta2 = 100 + tacoma([0 500], [0 0 0.0001 0], 0.04 ,5, 0.0000001, windspeed, false)
+        angularMagnificationTheta3 = 100 + tacoma([0 500], [0 0 0.00001 0], 0.04 ,5, 0.0000001, windspeed, false)
         % Is the angle magnification approx consistent. YES
         
     % Exercise 4 (finding minimum windspeed inwhich a angular
     % magnification of 100 or more occurs
     case 4
-        windspeed = 50;  % start vindhastighet
-        n = 20; % steg som vil bli iterert
-
-        for (i = 0: n)
-            angularMagnification = tacoma([0 1000], [0 0 0.001 0], 25000, 5, 1 * 10^-6, windspeed, normalOmega, false);
-            if (angularMagnification > 100)
-                break
-            end
-             windspeed = windspeed + 1;
-        end
-        windspeed = windspeed - 5; % finnes det en bedre losning?
-        angularMagnification = tacoma([0 1000], [0 0 0.001 0], 25000, 5, 1 * 10^-6, windspeed. normalOmega, false);
-        while (angularMagnification < 100)
-            windspeed = windspeed + (0.5 * 10^-3);
-            angularMagnification = tacoma([0 1000], [0 0 0.001 0], 25000, 5, 1 * 10^-6, windspeed, normalOmega, false);
-        end
-        % Skriver ut losningen
-        angularMagnification
+        F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-7, windspeed, false);
+        windspeed = bisection(F, 40, 100, 1* 10^-7);
         windspeed
+        tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-7, windspeed, false)
         
     % Exercise 5
     case 5
@@ -59,7 +44,7 @@ switch (exercise)
         mf = 0.000000002; % multiplicationfactor
         n = 50; % steps that will be iterated
         for (i = 0: n)
-            angularMagnification = tacoma([0 1000], [1 0 (theta + (i * mf)) 0], 25000, 5, 0.0000001, windspeed, normalOmega, false);
+            angularMagnification = tacoma([0 1000], [1 0 (theta + (i * mf)) 0], 25000, 5, 0.0000001, windspeed, false);
             xPlotPosition = [xPlotPosition (theta + (i * mf))];
             yPlotPosition = [yPlotPosition angularMagnification];
             graph = plot(xPlotPosition, yPlotPosition);
