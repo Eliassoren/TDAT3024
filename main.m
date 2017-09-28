@@ -1,12 +1,12 @@
 % ([intervall],initialverdier[y y' theta theta'],antall steg,steg per plotpoint, toleranse, vindhastighet km/h, boolean kjor grafing eller computing)
 
-runGraph = false; % Set this to true to run graph
-exercise3 = true;
+runGraph = true; % Set this to true to run graph
+exercise3 = false;
 exercise4 = false;
 exercise6 = false;
 
 if (runGraph)
-    tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-6, 70.149000000000710, false)
+    tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-6, 70.149000000000710, true)
 end
 
 % Exercise 4 (finding minimum windspeed inwhich a angular
