@@ -3,11 +3,12 @@
     % t: tidsvariabel i ODE
     % system: system med y, y', theta, theta'
     % W: vindhastighet
-function ydot = ydot(t, system, W)
+    % omega: dempningskoeffisient
+function ydot = ydot(t, system, W, omega)
     l = 6; % Lengde fra midten av brua
     a = 0.2; % Hookes koeffisient for ulinearitet
     d = 0.01; % Dempingskoeffisient
-    omega = 2 * pi * 38 / 60; % Vinkel på brua
+    % omega = 2 * pi * 38 / 60; % Dempningskoeffisient
     K = 1000; % Fjærkonstant i Hookes lov, 1000N
     m = 2500; % Massen til en fot med vei, 2500kg
     

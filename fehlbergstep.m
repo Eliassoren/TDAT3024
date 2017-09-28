@@ -8,7 +8,7 @@
     % E: Feilkilde fra numerisk løsning
 % Eksempelbruk i løkke
     % fehlbergstep(t(i,:), y(i,:), h);
-function [ Wout , E ] = fehlbergstep( t, y, h, W)
+function [ Wout , E ] = fehlbergstep( t, y, h, W, omega)
    % Konstantverdier fra runge-kutta-fehlbergs metode
    A=[ 1/4        0         0         0        0;
         3/32       9/32      0         0        0;
@@ -23,12 +23,12 @@ function [ Wout , E ] = fehlbergstep( t, y, h, W)
    C = [ 1/4 3/8 12/13 1 1/2];
    
    % Stegene i metoden
-    s1=ydot(t, y, W);
-    s2=ydot(t+C(1)*h, y+h*(A(1,1)*s1), W);
-    s3=ydot(t+C(2)*h, y+h*(A(2,1)*s1+A(2,2)*s2), W);
-    s4=ydot(t+C(3)*h, y+h*(A(3,1)*s1+A(3,2)*s2+A(3,3)*s3), W);
-    s5=ydot(t+C(4)*h, y+h*(A(4,1)*s1+A(4,2)*s2+A(4,3)*s3+A(4,4)*s4), W);
-    s6=ydot(t+C(5)*h, y+h*(A(5,1)*s1+A(5,2)*s2+A(5,3)*s3+A(5,4)*s4+A(5,5)*s5), W);
+    s1=ydot(t, y, W, omega);
+    s2=ydot(t+C(1)*h, y+h*(A(1,1)*s1), W, omega);
+    s3=ydot(t+C(2)*h, y+h*(A(2,1)*s1+A(2,2)*s2), W, omega);
+    s4=ydot(t+C(3)*h, y+h*(A(3,1)*s1+A(3,2)*s2+A(3,3)*s3), W, omega);
+    s5=ydot(t+C(4)*h, y+h*(A(4,1)*s1+A(4,2)*s2+A(4,3)*s3+A(4,4)*s4), W, omega);
+    s6=ydot(t+C(5)*h, y+h*(A(5,1)*s1+A(5,2)*s2+A(5,3)*s3+A(5,4)*s4+A(5,5)*s5), W, omega);
     
     % Zout, 5. ordens løsning
     Zout=y+h*(B(1,1)*s1+B(1,2)*s2+B(1,3)*s3+B(1,4)*s4+B(1,5)*s5+B(1,6)*s6);
