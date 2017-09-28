@@ -19,9 +19,9 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, runGraph)
     h = h0; % Foerste steglengde
     y(1, :) = ic; % Legg inn initalverdier i systemet
     t(1, :) = inter(1); % Legg starttid
-    e(1, :) = 0.1; % Feilkilde
+    e(1) = 0.1; % Feilkilde
     h_sum = 0; % Sum av steg
-    startError = e(1, :); 
+    startError = e(1); 
     len = 6;
     initialAngle = y(1,3); % The initial angle from the initial conditions
     
@@ -80,7 +80,7 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, runGraph)
     'erase', 'xor', 'xdata', [], 'ydata', []);
     
     end
-    
+    constant = 0.0000001;
     while h_sum+inter(1)  < inter(2)
         for i = 1:p
             k = k + 1;
@@ -88,17 +88,16 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, runGraph)
             [w, err] = fehlbergstep(t(i,:), y(i,:), h, W); % Fehlberg returnerer en tabell med beregnet y-verdi w og feilkilde err.
             t(i+1,:) = t(i,:)+h;
             y(i+1,:) = w; 
-            e(i+1,:) = err;
-            h = h* 0.8 * (tol/e(i+1,:))^(1/4); % Juster steglengde basert på feilkilde
-            while (e(i+1,:) > tol) % Proev igjen så lenge feilkilde er stoerre enn toleransen
+            e(i+1) = err;
+            rel = e(i+1)/max(norm(y(i+1,:),2),constant);
+            h = h* 0.8 * (tol*norm(y(i+1,:),2)/e(i+1))^(1/5); % Juster steglengde basert på feilkilde
+            while ( rel > tol) % Proev igjen så lenge feilkilde er stoerre enn toleransen
+                h = h / 2;  % Halvver steglengde om andre forsÃ¸k med fehlberg etter justering ikke funker 
                 % Nytt forsÃ¸k etter fÃ¸rste justering
                 [w,err] = fehlbergstep(t(i,:), y(i,:), h, W);
                 y(i+1,:) = w;
-                e(i+1,:) = err;
-                % Halvver steglengde om andre forsÃ¸k med fehlberg etter justering ikke funker
-                if (e(i+1,:) > tol)
-                    h = h / 2; 
-                end
+                e(i+1) = err;
+                rel = e(i+1)/max(norm(y(i+1,:),2),constant);
             end
         end
         % Hopp et steg tilbake om summen av steg overskrider topp av
@@ -106,11 +105,11 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, runGraph)
         if (h_sum - inter(2) > t_tolerance)
             y(1, :) = y(p, :);
             t(1, :) = t(p, :);
-            e(1, :) = e(p, :);
+            e(1) = e(p);
         else
             y(1, :) = y(p+1, :);
             t(1, :) = t(p+1, :);
-            e(1, :) = e(p+1, :);
+            e(1) = e(p+1);
         end
         z1(k) = y(1, 1);
         z3(k) = y(1, 3);
