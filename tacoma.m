@@ -93,7 +93,7 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, omega, runGraph)
             while ( rel > tol) % Proev igjen s� lenge feilkilde er stoerre enn toleransen
                 h = h / 2;  % Halvver steglengde om andre forsøk med fehlberg etter justering ikke funker 
                 % Nytt forsøk etter første justering
-                [w,err] = fehlbergstep(t(i,:), y(i,:), h, W);
+                [w,err] = fehlbergstep(t(i,:), y(i,:), h, W, omega);
                 y(i+1,:) = w;
                 e(i+1) = err;
                 rel = e(i+1)/max(norm(y(i+1,:),2),constant);
