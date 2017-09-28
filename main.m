@@ -1,12 +1,12 @@
 % ([intervall],initialverdier[y y' theta theta'],antall steg,steg per plotpoint, toleranse, vindhastighet km/h, boolean kjor grafing eller computing)
 
 runGraph = false; % Set this to true to run graph
-exercise3 = true;
-exercise4 = false;
+exercise3 = false;
+exercise4 = true;
 exercise6 = false;
 
 if (runGraph)
-    tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-6, 70.149000000000710, false)
+    tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-6, 69.999999105930328, false)
 end
 
 % Exercise 4 (finding minimum windspeed inwhich a angular
@@ -14,16 +14,17 @@ end
 
 if (exercise4)
     
-    F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-6, windspeed, false);    
-    bisection(F, 50, 90, 1* 10^-6);
+    F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-7, windspeed, false);
+    windspeed = bisection(F, 40, 100, 1* 10^-7);
     windspeed
+    tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-7, windspeed, false)
     
     
 end
 
 % EXERCISE 3 -------------------------------------------------------
 if (exercise3)
-    windspeed = 60;  % starting windspeed
+    windspeed = 55;  % starting windspeed
     angularMagnificationTheta1 = 100 + tacoma([0 500], [0 0 0.001 0], 0.04 ,5, 0.0000001, windspeed, false)
     angularMagnificationTheta2 = 100 + tacoma([0 500], [0 0 0.0001 0], 0.04 ,5, 0.0000001, windspeed, false)
     angularMagnificationTheta3 = 100 + tacoma([0 500], [0 0 0.00001 0], 0.04 ,5, 0.0000001, windspeed, false)
