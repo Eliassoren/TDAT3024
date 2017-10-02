@@ -5,7 +5,7 @@ normalOmega = 2 * pi * 38 / 60;
 normalDempningsKoff = 0.01;
 
 runGraph = true; % Sett til true for å rendre grafer
-exercise = 7; % Hvilken oppgave som skal kjøres
+exercise = 4; % Hvilken oppgave som skal kjøres
 
 switch (exercise)
     % Exercise 1 TODO: Use tacoma with trapstep instead of Fehlberg
@@ -28,8 +28,22 @@ switch (exercise)
     % Exercise 4 & 5 (finding minimum windspeed inwhich a angular
     % magnification of 100 or more occurs
     case 4
-        F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-7, windspeed, normalOmega, normalDempningsKoff, false);
-        windspeed = bisection(F, 40, 100, 1* 10^-7);
+        
+%       n = 100;
+%       interval = 0;
+%         
+%       for interval = 0: n
+%           angularMagnification = tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-7, 30 + interval, normalOmega, normalDempningsKoff, false) - 100;
+%           if angularMagnification > 0
+%               interval
+%               break
+%           end
+%       end
+      
+     
+        
+        F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-7, windspeed, normalOmega, normalDempningsKoff, false) - 100;
+        windspeed = bisection(F, 40, 200, 1* 10^-7);
         windspeed
         tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-7, windspeed, normalOmega, normalDempningsKoff, false)
         

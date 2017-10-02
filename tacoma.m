@@ -120,7 +120,7 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGrap
         
         angleMagnify = y(1,3) / initialAngle;
         if (abs(angleMagnify) > yMaxAngleMagnify) % calibration
-            yMaxAngleMagnify = abs(angleMagnify) - 100;
+            yMaxAngleMagnify = abs(angleMagnify);
         end
         
         if (runGraph)
