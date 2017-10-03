@@ -31,18 +31,23 @@ switch (exercise)
         
         tolerance = 5 * 10^-5;
         
-      n = 100;
-      
-      for i = 0: n
-          angularMagnification = tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, 30 + i, normalOmega, normalDempningsKoff, false) - 100;
-          if angularMagnification > 0
-              i + 30
-              break
-          end
-      end
-      
+        % Run this to find a interval if unsure
+%       n = 100;
+%       
+%       for i = 0: n
+%           angularMagnification = tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, 30 + i, normalOmega, normalDempningsKoff, false) - 100;
+%           if angularMagnification > 0
+%               i + 30
+%               break
+%           end
+%       end
+        
+        % Defines the function and uses bisection with the defined function
+        % This is so we can easily use tacoma - 100 to find roots
         F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false) - 100;
-        windspeed = bisection(F, 60, 90, tolerance)
+        windspeed = bisection(F, 61, 90, tolerance)
+        
+        % The value below should be over 100
         tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false)
         
     % Exercise 6
