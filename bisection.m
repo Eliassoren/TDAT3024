@@ -1,5 +1,5 @@
 function [c] = bisection(F, a, b, tolerance)
-    if (F(a)*F(b) >= 0)
+    if (F(a)*F(b) > 0)
         return
     end
     while (((b - a)/2) > tolerance)

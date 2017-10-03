@@ -42,8 +42,7 @@ switch (exercise)
       end
       
         F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false) - 100;
-        windspeed = bisection(F, 70, 90, tolerance);
-        windspeed
+        windspeed = bisection(F, 60, 90, tolerance)
         tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false)
         
     % Exercise 6
