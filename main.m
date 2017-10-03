@@ -29,21 +29,22 @@ switch (exercise)
     % magnification of 100 or more occurs
     case 4
         
-%       n = 100;
-%       interval = 0;
-%         
-%       for interval = 0: n
-%           angularMagnification = tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-7, 30 + interval, normalOmega, normalDempningsKoff, false) - 100;
-%           if angularMagnification > 0
-%               interval
-%               break
-%           end
-%       end
+        tolerance = 5 * 10^-5;
+        
+      n = 100;
       
-        F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-5, windspeed, normalOmega, normalDempningsKoff, false) - 100;
-        windspeed = bisection(F, 0, 111, 1* 10^-5);
+      for i = 0: n
+          angularMagnification = tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, 30 + i, normalOmega, normalDempningsKoff, false) - 100;
+          if angularMagnification > 0
+              i + 30
+              break
+          end
+      end
+      
+        F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false) - 100;
+        windspeed = bisection(F, 70, 90, tolerance);
         windspeed
-        tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-5, windspeed, normalOmega, normalDempningsKoff, false)
+        tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false)
         
     % Exercise 6
     case 6
