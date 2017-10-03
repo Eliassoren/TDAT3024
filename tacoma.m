@@ -81,12 +81,12 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGrap
     'erase', 'xor', 'xdata', [], 'ydata', []);
     
     end
-    constant = 0.0000001;
+    constant = 0.00000000001;
     while h_sum+inter(1)  < inter(2)
         for i = 1:p
             k = k + 1;
             h_sum = h_sum + h; % På grunn av variabel steglengde, summer alle stegene
-            [w, err] = fehlbergstep(t(i,:), y(i,:), h, W, omega, d); % Fehlberg returnerer en tabell med beregnet y-verdi w og feilkilde err.
+            [w, err, z] = fehlbergstep(t(i,:), y(i,:), h, W, omega, d); % Fehlberg returnerer en tabell med beregnet y-verdi w og feilkilde err.
             t(i+1,:) = t(i,:)+h;
             y(i+1,:) = w; 
             e(i+1) = err;
@@ -100,6 +100,7 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGrap
                 e(i+1) = err;
                 rel = e(i+1)/max(norm(y(i+1,:),2),constant);
             end
+            y(i+1,:) = z;
         end
         % Hopp et steg tilbake om summen av steg overskrider topp av
         % intervall med for mye. Hvis ikke, behold verdier fra siste iterasjon.

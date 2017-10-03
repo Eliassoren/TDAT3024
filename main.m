@@ -6,11 +6,11 @@ normalDempningsKoff = 0.01;
 
 runGraph = true; % Sett til true for å rendre grafer
 exercise = 4; % Hvilken oppgave som skal kjøres
-
+%tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 59, normalOmega, normalDempningsKoff, false)
 switch (exercise)
     % Exercise 1 TODO: Use tacoma with trapstep instead of Fehlberg
     case 1
-        tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, runGraph);
+        tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, runGraph)
     
     % Exercise 2
     case 2
@@ -44,11 +44,11 @@ switch (exercise)
         
         % Defines the function and uses bisection with the defined function
         % This is so we can easily use tacoma - 100 to find roots
-        F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false) - 100;
-        windspeed = bisection(F, 61, 90, tolerance)
+        F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false) - 100;
+        windspeed = bisection(F, 1, 120, tolerance)
         
         % The value below should be over 100
-        tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false)
+        tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false)
         
     % Exercise 6
     case 6
