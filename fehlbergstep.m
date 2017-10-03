@@ -10,7 +10,7 @@
     % E: Feilkilde fra numerisk løsning
 % Eksempelbruk i løkke
     % fehlbergstep(t(i,:), y(i,:), h);
-function [ Wout , E ] = fehlbergstep( t, y, h, W, omega, d)
+function [ Wout, E, Zout ] = fehlbergstep( t, y, h, W, omega, d)
    % Konstantverdier fra runge-kutta-fehlbergs metode
    A=[ 1/4        0         0         0        0;
         3/32       9/32      0         0        0;

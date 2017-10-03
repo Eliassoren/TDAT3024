@@ -5,12 +5,12 @@ normalOmega = 2 * pi * 38 / 60;
 normalDempningsKoff = 0.01;
 
 runGraph = true; % Sett til true for å rendre grafer
-exercise = 7; % Hvilken oppgave som skal kjøres
-
+exercise = 4; % Hvilken oppgave som skal kjøres
+%tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 59, normalOmega, normalDempningsKoff, false)
 switch (exercise)
     % Exercise 1 TODO: Use tacoma with trapstep instead of Fehlberg
     case 1
-        tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, runGraph);
+        tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, runGraph)
     
     % Exercise 2
     case 2
@@ -28,10 +28,27 @@ switch (exercise)
     % Exercise 4 & 5 (finding minimum windspeed inwhich a angular
     % magnification of 100 or more occurs
     case 4
-        F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-7, windspeed, normalOmega, normalDempningsKoff, false);
-        windspeed = bisection(F, 40, 100, 1* 10^-7);
-        windspeed
-        tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-7, windspeed, normalOmega, normalDempningsKoff, false)
+        
+        tolerance = 5 * 10^-5;
+        
+        % Run this to find a interval if unsure
+%       n = 100;
+%       
+%       for i = 0: n
+%           angularMagnification = tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, 30 + i, normalOmega, normalDempningsKoff, false) - 100;
+%           if angularMagnification > 0
+%               i + 30
+%               break
+%           end
+%       end
+        
+        % Defines the function and uses bisection with the defined function
+        % This is so we can easily use tacoma - 100 to find roots
+        F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false) - 100;
+        windspeed = bisection(F, 1, 120, tolerance)
+        
+        % The value below should be over 100
+        tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false)
         
     % Exercise 6
     case 6
