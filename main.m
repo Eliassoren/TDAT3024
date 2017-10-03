@@ -40,10 +40,10 @@ switch (exercise)
 %           end
 %       end
       
-        F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-7, windspeed, normalOmega, normalDempningsKoff, false) - 100;
-        windspeed = bisection(F, 90, 95.9062, 1* 10^-7);
+        F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-5, windspeed, normalOmega, normalDempningsKoff, false) - 100;
+        windspeed = bisection(F, 0, 111, 1* 10^-5);
         windspeed
-        tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-7, windspeed, normalOmega, normalDempningsKoff, false)
+        tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-5, windspeed, normalOmega, normalDempningsKoff, false)
         
     % Exercise 6
     case 6

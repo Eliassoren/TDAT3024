@@ -12,6 +12,7 @@ function [c] = bisection(F, a, b, tolerance)
         else 
             b = c;
         end
+        c = (a + b) / 2;
         fprintf('%d, %d, %d\n', a, b, c);
         fprintf('%d, %d, %d\n', F(a), F(b), F(c));
     end
