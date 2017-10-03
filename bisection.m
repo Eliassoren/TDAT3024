@@ -7,10 +7,10 @@ function [c] = bisection(F, a, b, tolerance)
         if (F(c) == 0)
             return
         end
-        if (F(a)*F(b) < 0)
-            a = c;
-        else 
+        if (F(a)*F(c) < 0)
             b = c;
+        else 
+            a = c;
         end
         c = (a + b) / 2;
         fprintf('%d, %d, %d\n', a, b, c);

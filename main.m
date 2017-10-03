@@ -29,7 +29,7 @@ switch (exercise)
     % magnification of 100 or more occurs
     case 4
         
-        tolerance = 5 * 10^-5;
+        tolerance = 0.5 * 10^-3;
         
         % Run this to find a interval if unsure
 %       n = 100;
@@ -45,7 +45,7 @@ switch (exercise)
         % Defines the function and uses bisection with the defined function
         % This is so we can easily use tacoma - 100 to find roots
         F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false) - 100;
-        windspeed = bisection(F, 1, 120, tolerance)
+        windspeed = bisection(F, 56, 58, tolerance)
         
         % The value below should be over 100
         tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false)
