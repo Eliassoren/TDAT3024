@@ -10,11 +10,11 @@ exercise = 6; % Hvilken oppgave som skal kjøres
 switch (exercise)
     % Exercise 1 TODO: Use tacoma with trapstep instead of Fehlberg
     case 1
-        tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, runGraph)
+        traptacoma([0 500], [0 0 0.001 0], 0.04, 5, 59, normalOmega, normalDempningsKoff, runGraph)
     
     % Exercise 2
     case 2
-        tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, runGraph);
+        tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, runGraph);
         
     % Exercise 3
     case 3
