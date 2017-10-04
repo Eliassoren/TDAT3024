@@ -95,12 +95,12 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGrap
             while ( rel > tol) % Proev igjen så lenge feilkilde er stoerre enn toleransen
                 h = h / 2;  % Halvver steglengde om andre forsÃ¸k med fehlberg etter justering ikke funker 
                 % Nytt forsÃ¸k etter fÃ¸rste justering
-                [w,err] = fehlbergstep(t(i,:), y(i,:), h, W, omega, d);
+                [w, err] = fehlbergstep(t(i,:), y(i,:), h, W, omega, d); %  Oppdatere z her eller ikke ??????????????????????????
                 y(i+1,:) = w;
                 e(i+1) = err;
                 rel = e(i+1)/max(norm(y(i+1,:),2),constant);
             end
-            y(i+1,:) = z;
+            y(i+1,:) = z; % Lokal ekstrapolering. Benytt mest nøyaktige løsning ... ??????????????????????????????
         end
         % Hopp et steg tilbake om summen av steg overskrider topp av
         % intervall med for mye. Hvis ikke, behold verdier fra siste iterasjon.
