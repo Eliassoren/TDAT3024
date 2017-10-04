@@ -5,7 +5,7 @@ normalOmega = 2 * pi * 38 / 60;
 normalDempningsKoff = 0.01;
 
 runGraph = true; % Sett til true for å rendre grafer
-exercise = 4; % Hvilken oppgave som skal kjøres
+exercise = 7; % Hvilken oppgave som skal kjøres
 %tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 59, normalOmega, normalDempningsKoff, false)
 switch (exercise)
     % Exercise 1 TODO: Use tacoma with trapstep instead of Fehlberg
@@ -71,9 +71,43 @@ switch (exercise)
     
     % Exercise 7
     case 7
-        newOmega = 2 * normalOmega;
-        tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-6, 58.99, 3, normalDempningsKoff, false)
-        tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-6, 58.99, normalOmega, normalDempningsKoff, false)
-        tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-6, 58.99, normalOmega * 2, normalDempningsKoff, false)
-        % tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-6, 58.99, normalOmega * 2, normalDempningsKoff, true)
+        tolerance = 0.5 * 10^-3;
+        newOmega = 3;
+        newD = normalDempningsKoff * 2; % 0.02
+        tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-6, 58.99, newOmega, normalDempningsKoff, false)
+        tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-6, 58.99, newOmega, newD, false)
+        
+        F_old = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, windspeed, newOmega, normalDempningsKoff, false) - 100;
+        F_new = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, windspeed, newOmega, newD, false) - 100;
+        windspeed_old = bisection(F_old, 1, 120, tolerance);
+        windspeed_new = bisection(F_new, 1, 120, tolerance);
+        
+        fprintf('Min. vindhastighet for d = 0.01, omega = 3: %d km/t\n', windspeed_old);
+        fprintf('Min. vindhastighet for d = 0.02, omega = 3: %d km/t\n', windspeed_new);
+        
+        % Koden under plotter alle 3 ulike vinkelforstørrelser ved de ulike
+        % d- og omega-parametrene
+        xVal = 0 : 0.5 : 120;
+        yValOriginal = zeros(120/0.5, 1);
+        yValOld = zeros(120/0.5, 1);
+        yValNew = zeros(120/0.5, 1);
+        counter = 1;
+        for i = 0 : 0.5 : 120
+            yValOriginal(counter) = tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, i, normalOmega, normalDempningsKoff, false);
+            yValOld(counter) = tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, i, newOmega, normalDempningsKoff, false);
+            yValNew(counter) = tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, i, newOmega, newD, false);
+            counter = counter + 1;
+        end
+        
+        hold on
+        plot(xVal, yValOriginal);
+        plot(xVal, yValOld);
+        plot(xVal, yValNew);
+        refline(0, 100); % Horisontal linje på y = 100
+        hold off
+        axis([0 120 0 200]);
+        legend({'$d = 0.01, \omega = 2\pi*\frac{38}{60}$', '$d = 0.01, \omega = 3$', '$d = 0.02, \omega = 3$'},'Interpreter','latex');
+        xlabel('Vindhastighet (km/t)');
+        ylabel('Vinkelforstørring');
+        grid
 end
