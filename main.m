@@ -5,7 +5,7 @@ normalOmega = 2 * pi * 38 / 60;
 normalDempningsKoff = 0.01;
 
 runGraph = true; % Sett til true for å rendre grafer
-exercise = 4; % Hvilken oppgave som skal kjøres
+exercise = 3; % Hvilken oppgave som skal kjøres
 %tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 59, normalOmega, normalDempningsKoff, false)
 switch (exercise)
     % Exercise 1 TODO: Use tacoma with trapstep instead of Fehlberg
@@ -19,10 +19,12 @@ switch (exercise)
     % Exercise 3
     case 3
         % TODO: Bruk en for-løkke for å teste flere initialverdier for vind
-        windspeed = 55;  % starting windspeed TODO: Says 50 in the exercise?
-        angularMagnificationTheta1 = 100 + tacoma([0 500], [0 0 0.001 0], 0.04 ,5, 0.0000001, windspeed, normalOmega, normalDempningsKoff, false)
-        angularMagnificationTheta2 = 100 + tacoma([0 500], [0 0 0.0001 0], 0.04 ,5, 0.0000001, windspeed, normalOmega, normalDempningsKoff, false)
-        angularMagnificationTheta3 = 100 + tacoma([0 500], [0 0 0.00001 0], 0.04 ,5, 0.0000001, windspeed, normalOmega, normalDempningsKoff, false)
+        windspeed = 50;  % starting windspeed TODO: Says 50 in the exercise?
+        n = 5; % number of iterations
+        for iteration = 0: n
+            angle = 0.001 * 10^-iteration
+            angularMagnificationTheta = 100 + tacoma([0 500], [0 0 0.001 0], 0.04 ,5, 0.001 * 10^-iteration, windspeed, normalOmega, normalDempningsKoff, false)
+        end
         % Is the angle magnification approx consistent. YES
         
     % Exercise 4 & 5 (finding minimum windspeed inwhich a angular
