@@ -5,7 +5,7 @@ normalOmega = 2 * pi * 38 / 60;
 normalDempningsKoff = 0.01;
 
 runGraph = true; % Sett til true for å rendre grafer
-exercise = 3; % Hvilken oppgave som skal kjøres
+exercise = 6; % Hvilken oppgave som skal kjøres
 %tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 59, normalOmega, normalDempningsKoff, false)
 switch (exercise)
     % Exercise 1 TODO: Use tacoma with trapstep instead of Fehlberg
@@ -20,14 +20,14 @@ switch (exercise)
     case 3
         % TODO: Bruk en for-løkke for å teste flere initialverdier for vind
         windspeed = 50;  % starting windspeed TODO: Says 50 in the exercise?
-        n = 5; % number of iterations
+        n = 10; % number of iterations
         xPlotPosition = [];
         yPlotPosition = [];
-        for iteration = 0: n
-            angle = 0.001 * 10^-iteration
-            angularMagnificationTheta = tacoma([0 500], [0 0 0.001 0], 0.04 ,5, 0.001 * 10^-iteration, windspeed, normalOmega, normalDempningsKoff, false)
+        for iteration = 3: n
+            angle = 1 * 10^-iteration
+            angularMagnificationTheta = tacoma([0 500], [0 0 (0.001 * 10^-iteration) 0], 0.04 ,5,  1* 10^-6, windspeed, normalOmega, normalDempningsKoff, false)
             if (runGraph)
-                xPlotPosition = [xPlotPosition angle];
+                xPlotPosition = [xPlotPosition iteration];
                 yPlotPosition = [yPlotPosition angularMagnificationTheta];
                 graph = plot(xPlotPosition, yPlotPosition);
             end
@@ -65,15 +65,24 @@ switch (exercise)
         % vindhastighet, vi bruker kun én
         xPlotPosition = [];
         yPlotPosition = [];
-        theta = 0.0000001;
+        theta = 1 * 10^-7;
         windspeed = 150;  % starting windspeed
-        mf = 0.000000002; % multiplicationfactor
-        n = 50; % steps that will be iterated
-        for (i = 0: n)
-            angularMagnification = tacoma([0 1000], [1 0 (theta + (i * mf)) 0], 25000, 5, 0.0000001, windspeed, normalOmega, normalDempningsKoff, false);
-            xPlotPosition = [xPlotPosition (theta + (i * mf))];
-            yPlotPosition = [yPlotPosition angularMagnification];
-            graph = plot(xPlotPosition, yPlotPosition);
+        mf = 2 * 10^-8; % multiplicationfactor
+        n = 10; % steps that will be iterated
+        k = 5; % windspeeds that will be iterated
+        for (j = 0: k)
+            for (i = 0: n)
+                angularMagnification = tacoma([0 500], [0 0 (theta + (i * mf)) 0], 0.04 ,5, 1 * 10^-6, windspeed, normalOmega, normalDempningsKoff, false);
+                if (angularMagnification < 100)
+                    i
+                    angleMag = (theta + (i * mf))
+                end
+                xPlotPosition = [xPlotPosition (theta + (i * mf))];
+                yPlotPosition = [yPlotPosition angularMagnification];
+                plot(xPlotPosition, yPlotPosition);
+            end
+            hold on;
+            windspeed = windspeed + 10;
         end
         % axis([ 0, t(1)+50, 0, yLim ]); % axis defined with calibration
         grid % grid enabled
