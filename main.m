@@ -1,12 +1,13 @@
 % ([intervall],initialverdier[y y' theta theta'],antall steg,steg per plotpoint, toleranse, vindhastighet km/h, boolean kjor grafing eller computing)
 
-% Standard omega-verdi
+% Standard verdi for koeffisienter
 normalOmega = 2 * pi * 38 / 60;
 normalDempningsKoff = 0.01;
 
 runGraph = true; % Sett til true for å rendre grafer
 exercise = 7; % Hvilken oppgave som skal kjøres
 %tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 59, normalOmega, normalDempningsKoff, false)
+
 switch (exercise)
     % Exercise 1 TODO: Use tacoma with trapstep instead of Fehlberg
     case 1
@@ -48,7 +49,7 @@ switch (exercise)
         windspeed = bisection(F, 56, 58, tolerance)
         
         % The value below should be over 100
-        tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false)
+        anglemagnification = tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false)
         
     % Exercise 6
     case 6
