@@ -21,9 +21,16 @@ switch (exercise)
         % TODO: Bruk en for-løkke for å teste flere initialverdier for vind
         windspeed = 50;  % starting windspeed TODO: Says 50 in the exercise?
         n = 5; % number of iterations
+        xPlotPosition = [];
+        yPlotPosition = [];
         for iteration = 0: n
             angle = 0.001 * 10^-iteration
-            angularMagnificationTheta = 100 + tacoma([0 500], [0 0 0.001 0], 0.04 ,5, 0.001 * 10^-iteration, windspeed, normalOmega, normalDempningsKoff, false)
+            angularMagnificationTheta = tacoma([0 500], [0 0 0.001 0], 0.04 ,5, 0.001 * 10^-iteration, windspeed, normalOmega, normalDempningsKoff, false)
+            if (runGraph)
+                xPlotPosition = [xPlotPosition angle];
+                yPlotPosition = [yPlotPosition angularMagnificationTheta];
+                graph = plot(xPlotPosition, yPlotPosition);
+            end
         end
         % Is the angle magnification approx consistent. YES
         
