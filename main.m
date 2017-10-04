@@ -5,7 +5,7 @@ normalOmega = 2 * pi * 38 / 60;
 normalDempningsKoff = 0.01;
 
 runGraph = true; % Sett til true for å rendre grafer
-exercise = 6; % Hvilken oppgave som skal kjøres
+exercise = 4; % Hvilken oppgave som skal kjøres
 %tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 59, normalOmega, normalDempningsKoff, false)
 switch (exercise)
     % Exercise 1 TODO: Use tacoma with trapstep instead of Fehlberg
@@ -54,11 +54,12 @@ switch (exercise)
         % Defines the function and uses bisection with the defined function
         % This is so we can easily use tacoma - 100 to find roots
         F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false) - 100;
-        windspeed = bisection(F, 56, 58, tolerance)
+        windspeed = bisection(F, 56, 58, tolerance);
         
         % The value below should be over 100
-        tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false)
-        
+        angleMagnification = tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false);
+        fprintf('Bijeksjonsmetoden ga rot på W = %d km/t\n', windspeed);
+        fprintf('Kjøres simulasjonen med W = %d km/t, er vinkelforstørrelsen %d\n', windspeed, angleMagnification);
     % Exercise 6
     case 6
         % TODO: Oppgaven sier at man skal prøve flere verdier for
