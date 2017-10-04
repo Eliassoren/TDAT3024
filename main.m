@@ -63,14 +63,15 @@ switch (exercise)
     case 6
         % TODO: Oppgaven sier at man skal prøve flere verdier for
         % vindhastighet, vi bruker kun én
-        xPlotPosition = [];
-        yPlotPosition = [];
         theta = 1 * 10^-7;
         windspeed = 150;  % starting windspeed
         mf = 2 * 10^-8; % multiplicationfactor
         n = 10; % steps that will be iterated
         k = 5; % windspeeds that will be iterated
+        hold on
         for (j = 0: k)
+            xPlotPosition = [];
+            yPlotPosition = [];
             for (i = 0: n)
                 angularMagnification = tacoma([0 500], [0 0 (theta + (i * mf)) 0], 0.04 ,5, 1 * 10^-6, windspeed, normalOmega, normalDempningsKoff, false);
                 if (angularMagnification < 100)
@@ -79,11 +80,12 @@ switch (exercise)
                 end
                 xPlotPosition = [xPlotPosition (theta + (i * mf))];
                 yPlotPosition = [yPlotPosition angularMagnification];
-                plot(xPlotPosition, yPlotPosition);
             end
-            hold on;
+            % Plotter en ny graf for hver endring i vindhastighet
+            plot(xPlotPosition, yPlotPosition);
             windspeed = windspeed + 10;
         end
+        hold off
         % axis([ 0, t(1)+50, 0, yLim ]); % axis defined with calibration
         grid % grid enabled
     
