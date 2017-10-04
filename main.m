@@ -4,8 +4,9 @@
 normalOmega = 2 * pi * 38 / 60;
 normalDempningsKoff = 0.01;
 
-runGraph = true; % Sett til true for å rendre grafer
-exercise = 7; % Hvilken oppgave som skal kjøres
+runGraph = true; % Sett til true for Ã¥ rendre grafer
+exercise = 7; % Hvilken oppgave som skal kjÃ¸res
+
 %tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 59, normalOmega, normalDempningsKoff, false)
 
 switch (exercise)
@@ -19,11 +20,20 @@ switch (exercise)
         
     % Exercise 3
     case 3
-        % TODO: Bruk en for-løkke for å teste flere initialverdier for vind
-        windspeed = 55;  % starting windspeed TODO: Says 50 in the exercise?
-        angularMagnificationTheta1 = 100 + tacoma([0 500], [0 0 0.001 0], 0.04 ,5, 0.0000001, windspeed, normalOmega, normalDempningsKoff, false)
-        angularMagnificationTheta2 = 100 + tacoma([0 500], [0 0 0.0001 0], 0.04 ,5, 0.0000001, windspeed, normalOmega, normalDempningsKoff, false)
-        angularMagnificationTheta3 = 100 + tacoma([0 500], [0 0 0.00001 0], 0.04 ,5, 0.0000001, windspeed, normalOmega, normalDempningsKoff, false)
+        % TODO: Bruk en for-lÃ¸kke for Ã¥ teste flere initialverdier for vind
+        windspeed = 50;  % starting windspeed TODO: Says 50 in the exercise?
+        n = 5; % number of iterations
+        xPlotPosition = [];
+        yPlotPosition = [];
+        for iteration = 0: n
+            angle = 0.001 * 10^-iteration
+            angularMagnificationTheta = tacoma([0 500], [0 0 0.001 0], 0.04 ,5, 0.001 * 10^-iteration, windspeed, normalOmega, normalDempningsKoff, false)
+            if (runGraph)
+                xPlotPosition = [xPlotPosition angle];
+                yPlotPosition = [yPlotPosition angularMagnificationTheta];
+                graph = plot(xPlotPosition, yPlotPosition);
+            end
+        end
         % Is the angle magnification approx consistent. YES
         
     % Exercise 4 & 5 (finding minimum windspeed inwhich a angular
@@ -53,8 +63,8 @@ switch (exercise)
         
     % Exercise 6
     case 6
-        % TODO: Oppgaven sier at man skal prøve flere verdier for
-        % vindhastighet, vi bruker kun én
+        % TODO: Oppgaven sier at man skal prÃ¸ve flere verdier for
+        % vindhastighet, vi bruker kun Ã©n
         xPlotPosition = [];
         yPlotPosition = [];
         theta = 0.0000001;
@@ -86,7 +96,7 @@ switch (exercise)
         fprintf('Min. vindhastighet for d = 0.01, omega = 3: %d km/t\n', windspeed_old);
         fprintf('Min. vindhastighet for d = 0.02, omega = 3: %d km/t\n', windspeed_new);
         
-        % Koden under plotter alle 3 ulike vinkelforstørrelser ved de ulike
+        % Koden under plotter alle 3 ulike vinkelforstÃ¸rrelser ved de ulike
         % d- og omega-parametrene
         xVal = 0 : 0.5 : 120;
         yValOriginal = zeros(120/0.5, 1);
@@ -104,11 +114,11 @@ switch (exercise)
         plot(xVal, yValOriginal);
         plot(xVal, yValOld);
         plot(xVal, yValNew);
-        refline(0, 100); % Horisontal linje på y = 100
+        refline(0, 100); % Horisontal linje pÃ¥ y = 100
         hold off
         axis([0 120 0 200]);
         legend({'$d = 0.01, \omega = 2\pi*\frac{38}{60}$', '$d = 0.01, \omega = 3$', '$d = 0.02, \omega = 3$'},'Interpreter','latex');
         xlabel('Vindhastighet (km/t)');
-        ylabel('Vinkelforstørring');
+        ylabel('VinkelforstÃ¸rring');
         grid
 end
