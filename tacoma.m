@@ -19,6 +19,7 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGrap
     t_tolerance = 0.01; % Toleranse paa hvor langt over inter(2) 
     h = h0; % Foerste steglengde
     y(1, :) = ic; % Legg inn initalverdier i systemet
+    w(1, :) = ic; % Startverdier i tilsvarende w-tabell. For � lagre w-verdiene
     t(1) = inter(1); % Legg starttid
     e(1) = 0.1; % Feilkilde
     h_sum = 0; % Sum av steg
@@ -81,7 +82,7 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGrap
     'erase', 'xor', 'xdata', [], 'ydata', []);
     
     end
-    constant = 0.00000000001;
+    constant = 0.00000000001; % Konstant som er st�rre enn 0. Benyttes for � beskytte mot sv�rt sm� verdier av w. 
     while h_sum+inter(1)  < inter(2)
         for i = 1:p
             k = k + 1;
@@ -89,6 +90,7 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGrap
             [w, err, z] = fehlbergstep(t(i), y(i,:), h, W, omega, d); % Fehlberg returnerer en tabell med beregnet y-verdi w og feilkilde err.
             t(i+1) = t(i)+h;
             y(i+1,:) = w; 
+            w(i+1,:) = w;
             e(i+1) = err;
             rel = e(i+1)/max(norm(y(i+1,:),2),constant);
             h = h* 0.8 * (tol*norm(y(i+1,:),2)/e(i+1))^(1/5); % Juster steglengde basert på feilkilde
@@ -100,12 +102,12 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGrap
                 e(i+1) = err;
                 rel = e(i+1)/max(norm(y(i+1,:),2),constant);
             end
-           y(i+1,:) = z; % Lokal ekstrapolering. Benytt mest nøyaktige løsning ... 
+            y(i+1,:) = z; % Lokal ekstrapolering. N�r w er n�re nok z, benytt mer n�yaktige l�sning. 
         end
         % Hopp et steg tilbake om summen av steg overskrider topp av
         % intervall med for mye. Hvis ikke, behold verdier fra siste iterasjon.
         if (h_sum - inter(2) > t_tolerance)
-            y(1, :) = y(p, :);
+            y(1, :) = y(p, :); % Benyttes for plotting
             t(1) = t(p);
             e(1) = e(p);
         else

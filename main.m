@@ -4,6 +4,7 @@
 normalOmega = 2 * pi * 38 / 60;
 normalDempningsKoff = 0.01;
 
+
 runGraph = true; % Sett til true for Ã¥ rendre grafer
 exercise = 7; % Hvilken oppgave som skal kjÃ¸res
 
