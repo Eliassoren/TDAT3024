@@ -11,7 +11,7 @@
     % d: dempningskoeffisient
 % Kaller enstegs metode som trapstep.m eller fehlbergstep.m
 % Eksempel: tacoma([0 1000],[1 0 0.001 0],0.04,5,true)
-function [yMaxAngleMagnify, yHistory] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGraph)
+function [yMaxAngleMagnify, timeelapsed, yHistory] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGraph)
     if (runGraph)
         clf % clear figure window
     end
@@ -29,20 +29,19 @@ function [yMaxAngleMagnify, yHistory] = tacoma(inter, ic, h0, p, tol, W, omega, 
     initialAngle = y(1,3); % The initial angle from the initial conditions
     
     yMaxAngleMagnify = 0; % Denne variabelen brukes i computing og er derfor definert her
-    
+    yMaxYPosition = 0;
+    angleMagnify = 0;
     if (runGraph)
     
     % These values are used for calibrating the graphs so the height
     % is dynamicaly changed to fit for the current values
     yMax = 0; 
-    yMaxYPosition = 0;
     yMaxError = 0;
     yMaxStepLength = 0;
     yMaxErrorMagnify = 0;
     
     % This value is for finding if the error is magnified by 100 or more
     errorMagnify = 0;
-    angleMagnify = 0;
     
     % These tables contain the values being plotted 
     % into each graph and subgraph
@@ -84,9 +83,11 @@ function [yMaxAngleMagnify, yHistory] = tacoma(inter, ic, h0, p, tol, W, omega, 
     
     end
     constant = 0.00000000001; % Konstant som er st�rre enn 0. Benyttes for � beskytte mot sv�rt sm� verdier av w. 
+    tic;
     while h_sum+inter(1)  < inter(2)
         for i = 1:p
             k = k + 1;
+            
             h_sum = h_sum + h; % På grunn av variabel steglengde, summer alle stegene
             [w, err, z] = fehlbergstep(t(i), y(i,:), h, W, omega, d); % Fehlberg returnerer en tabell med beregnet y-verdi w og feilkilde err.
             t(i+1) = t(i)+h;
@@ -131,7 +132,9 @@ function [yMaxAngleMagnify, yHistory] = tacoma(inter, ic, h0, p, tol, W, omega, 
         if (abs(angleMagnify) > yMaxAngleMagnify) % calibration
             yMaxAngleMagnify = abs(angleMagnify);
         end
-        
+        if (abs(y(1,1)) > yMaxYPosition)
+            yMaxYPosition = y(1,1);
+        end
         if (runGraph)
             set(road, 'xdata', [-c c], 'ydata', [-s-y(1, 1) s-y(1, 1)])
             set(lcable, 'xdata', [-c -c], 'ydata', [-s-y(1, 1) 8])
@@ -227,6 +230,14 @@ function [yMaxAngleMagnify, yHistory] = tacoma(inter, ic, h0, p, tol, W, omega, 
 
             drawnow limitrate;
             pause(h);
+
         end
     end
+    yMaxYPosition
+    yMaxAngleMagnify*ic(3)
+    yMaxAngleMagnify
+    timeelapsed = toc;
+    fprintf('Y',yMaxYPosition);
+    fprintf('theta', yMaxAngleMagnify*ic(3));
+    fprintf('magnify',yMaxAngleMagnify);
 end

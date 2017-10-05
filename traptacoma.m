@@ -5,12 +5,12 @@
     % h: steglengde
     % p: steg per punkt plottet
     % W: vindhastighet i km/h
-    % runGraph: Kjør enten grafing eller computing
+    % runGraph: KjÃ¸r enten grafing eller computing
     % omega: svingningskoeffisient
     % d: dempningskoeffisient
 % Kaller enstegs metode som trapstep.m eller fehlbergstep.m
 % Eksempel: tacoma([0 1000],[1 0 0.001 0],0.04,5,true)
-function [yMaxAngleMagnify, yHistory] = traptacoma(inter, ic, h0, p, W, omega, d, runGraph)
+function [yMaxAngleMagnify, timeelapsed, yHistory] = traptacoma(inter, ic, h0, p, W, omega, d, runGraph)
     if (runGraph)
         clf % clear figure window
     end
@@ -21,12 +21,12 @@ function [yMaxAngleMagnify, yHistory] = traptacoma(inter, ic, h0, p, W, omega, d
     y(1, :) = ic; % Legg inn initalverdier i systemet
     t(1) = inter(1); % Legg starttid
     len = 6;
-    initialAngle = y(1,3); % The initial angle from the initial conditions
+
+    initialAngle = y(1,3); % Startvinkel fra initialverdier
     
-    % Variabler som holder maksverdier
+    yMaxAngleMagnify = 0; % Denne variabelen brukes i computing og er derfor definert her
     yMax = 0; 
     yMaxYPosition = 0;
-    yMaxAngleMagnify = 0;
     % This value is for finding if the error is magnified by 100 or more
     angleMagnify = 0;
     
@@ -64,10 +64,12 @@ function [yMaxAngleMagnify, yHistory] = traptacoma(inter, ic, h0, p, W, omega, d
     'erase', 'xor', 'xdata', [], 'ydata', []);
     
     end
+    tic;
     for k = 1:n
         for i = 1:p
             k = k + 1;
             y(i+1,:) = trapstep(t(i), y(i,:), h, W, omega, d); % Fehlberg returnerer en tabell med beregnet y-verdi w og feilkilde err.
+
             t(i+1) = t(i)+h;
             
             [m, n] = size(yHistory);
@@ -144,6 +146,7 @@ function [yMaxAngleMagnify, yHistory] = traptacoma(inter, ic, h0, p, W, omega, d
             pause(h);
         end
     end
+    timeelapsed = toc;
 end
 
 
