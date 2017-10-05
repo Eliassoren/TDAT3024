@@ -18,8 +18,7 @@ switch (exercise)
         
     % Exercise 3
     case 3
-        % TODO: Bruk en for-løkke for å teste flere initialverdier for vind
-        windspeed = 50;  % starting windspeed TODO: Says 50 in the exercise?
+        windspeed = 50;  % starting windspeed
         n = 10; % number of iterations
         xPlotPosition = [];
         yPlotPosition = [];
