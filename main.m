@@ -5,11 +5,11 @@ normalOmega = 2 * pi * 38 / 60;
 normalDempningsKoff = 0.01;
 
 
-runGraph = false; % Sett til true for Ã¥ rendre grafer
+runGraph = true; % Sett til true for Ã¥ rendre grafer
 exercise = 2; % Hvilken oppgave som skal kjÃ¸res
-interval = [0 500]
+interval = [0 1800]
 time_sum = 0;
-sim = 1; % Antall simuleringer
+sim = 2; % Antall simuleringer
 time_spent_fehl = 0;
 time_spent_trap = 0;
 switch (exercise)

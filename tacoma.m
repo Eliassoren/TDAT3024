@@ -127,7 +127,7 @@ function [yMaxAngleMagnify, timeelapsed] = tacoma(inter, ic, h0, p, tol, W, omeg
             yMaxAngleMagnify = abs(angleMagnify);
         end
         if (abs(y(1,1)) > yMaxYPosition)
-            yMaxYPosition = y(1,1);
+            yMaxYPosition = abs(y(1,1));
         end
         if (runGraph)
             set(road, 'xdata', [-c c], 'ydata', [-s-y(1, 1) s-y(1, 1)])
@@ -227,11 +227,9 @@ function [yMaxAngleMagnify, timeelapsed] = tacoma(inter, ic, h0, p, tol, W, omeg
 
         end
     end
-    yMaxYPosition
-    yMaxAngleMagnify*ic(3)
-    yMaxAngleMagnify
+   
     timeelapsed = toc;
-    fprintf('Y',yMaxYPosition);
-    fprintf('theta', yMaxAngleMagnify*ic(3));
-    fprintf('magnify',yMaxAngleMagnify);
+    fprintf('Y %d\n',yMaxYPosition);
+    fprintf('theta %d\n', yMaxAngleMagnify*ic(3));
+    fprintf('magnify %d\n',yMaxAngleMagnify);
 end
