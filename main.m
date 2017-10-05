@@ -5,12 +5,12 @@ normalOmega = 2 * pi * 38 / 60;
 normalDempningsKoff = 0.01;
 
 runGraph = true; % Sett til true for Ã¥ rendre grafer
-exercise = 7; % Hvilken oppgave som skal kjÃ¸res
+exercise = 1; % Hvilken oppgave som skal kjÃ¸res
 
 switch (exercise)
-    % Exercise 1 TODO: Use tacoma with trapstep instead of Fehlberg
+    % Exercise 1
     case 1
-        traptacoma([0 500], [0 0 0.001 0], 0.04, 5, 59, normalOmega, normalDempningsKoff, runGraph)
+        traptacoma([0 500], [0 0 0.001 0], 0.04, 5, 80, normalOmega, normalDempningsKoff, runGraph)
     
     % Exercise 2
     case 2
@@ -94,9 +94,7 @@ switch (exercise)
         tolerance = 0.5 * 10^-3;
         newOmega = 3;
         newD = normalDempningsKoff * 2; % 0.02
-        tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-6, 58.99, newOmega, normalDempningsKoff, false)
-        tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-6, 58.99, newOmega, newD, false)
-        
+
         F_old = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, windspeed, newOmega, normalDempningsKoff, false) - 100;
         F_new = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, windspeed, newOmega, newD, false) - 100;
         windspeed_old = bisection(F_old, 1, 120, tolerance);

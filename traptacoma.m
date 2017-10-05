@@ -22,14 +22,15 @@ function [yMaxAngleMagnify] = traptacoma(inter, ic, h0, p, W, omega, d, runGraph
     len = 6;
     initialAngle = y(1,3); % The initial angle from the initial conditions
     
+    yMaxYPosition = 0;
+    yMaxAngleMagnify = 0;
     
     if (runGraph)
     
     % These values are used for calibrating the graphs so the height
     % is dynamicaly changed to fit for the current values
     yMax = 0; 
-    yMaxYPosition = 0;
-    yMaxAngleMagnify = 0;
+
     % This value is for finding if the error is magnified by 100 or more
     angleMagnify = 0;
     
@@ -80,6 +81,10 @@ function [yMaxAngleMagnify] = traptacoma(inter, ic, h0, p, W, omega, d, runGraph
         
         c = len * cos(y(1, 3));
         s = len * sin(y(1, 3));
+        
+        if (abs(y(1,1)) > yMaxYPosition)
+            yMaxYPosition = abs(y(1,1));
+        end
         
         angleMagnify = y(1,3) / initialAngle;
         if (abs(angleMagnify) > yMaxAngleMagnify) % calibration
@@ -141,6 +146,9 @@ function [yMaxAngleMagnify] = traptacoma(inter, ic, h0, p, W, omega, d, runGraph
             pause(h);
         end
     end
+    fprintf('Maksimum avvik i y-retning: %d meter\n', yMaxYPosition);
+    fprintf('Maksimum avvik i vinkel: %d\n', yMaxAngleMagnify * ic(3));
+    fprintf('Maksimum vinkelforstørrelse: %d\n', yMaxAngleMagnify);
 end
 
 
