@@ -5,7 +5,7 @@ normalOmega = 2 * pi * 38 / 60;
 normalDempningsKoff = 0.01;
 
 runGraph = true; % Sett til true for å rendre grafer
-exercise = 1; % Hvilken oppgave som skal kjøres
+exercise = 2; % Hvilken oppgave som skal kjøres
 %tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 59, normalOmega, normalDempningsKoff, false)
 switch (exercise)
     % Exercise 1 TODO: Use tacoma with trapstep instead of Fehlberg
