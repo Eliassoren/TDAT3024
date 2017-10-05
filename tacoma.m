@@ -28,20 +28,19 @@ function [yMaxAngleMagnify, timeelapsed] = tacoma(inter, ic, h0, p, tol, W, omeg
     initialAngle = y(1,3); % The initial angle from the initial conditions
     
     yMaxAngleMagnify = 0; % Denne variabelen brukes i computing og er derfor definert her
-    
+    yMaxYPosition = 0;
+    angleMagnify = 0;
     if (runGraph)
     
     % These values are used for calibrating the graphs so the height
     % is dynamicaly changed to fit for the current values
     yMax = 0; 
-    yMaxYPosition = 0;
     yMaxError = 0;
     yMaxStepLength = 0;
     yMaxErrorMagnify = 0;
     
     % This value is for finding if the error is magnified by 100 or more
     errorMagnify = 0;
-    angleMagnify = 0;
     
     % These tables contain the values being plotted 
     % into each graph and subgraph
@@ -127,7 +126,9 @@ function [yMaxAngleMagnify, timeelapsed] = tacoma(inter, ic, h0, p, tol, W, omeg
         if (abs(angleMagnify) > yMaxAngleMagnify) % calibration
             yMaxAngleMagnify = abs(angleMagnify);
         end
-        
+        if (abs(y(1,1)) > yMaxYPosition)
+            yMaxYPosition = y(1,1);
+        end
         if (runGraph)
             set(road, 'xdata', [-c c], 'ydata', [-s-y(1, 1) s-y(1, 1)])
             set(lcable, 'xdata', [-c -c], 'ydata', [-s-y(1, 1) 8])
@@ -226,5 +227,11 @@ function [yMaxAngleMagnify, timeelapsed] = tacoma(inter, ic, h0, p, tol, W, omeg
 
         end
     end
+    yMaxYPosition
+    yMaxAngleMagnify*ic(3)
+    yMaxAngleMagnify
     timeelapsed = toc;
+    fprintf('Y',yMaxYPosition);
+    fprintf('theta', yMaxAngleMagnify*ic(3));
+    fprintf('magnify',yMaxAngleMagnify);
 end
