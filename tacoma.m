@@ -130,9 +130,9 @@ function [yMaxAngleMagnify, timeelapsed] = tacoma(inter, ic, h0, p, tol, W, omeg
             yMaxYPosition = abs(y(1,1));
         end
         if (runGraph)
-            set(road, 'xdata', [-c c], 'ydata', [-s-y(1, 1) s-y(1, 1)])
-            set(lcable, 'xdata', [-c -c], 'ydata', [-s-y(1, 1) 8])
-            set(rcable, 'xdata', [c c], 'ydata', [s-y(1, 1) 8])
+            set(road, 'xdata', [-c c], 'ydata', [s+y(1, 1) s+y(1, 1)])
+            set(lcable, 'xdata', [-c -c], 'ydata', [s+y(1, 1) 8])
+            set(rcable, 'xdata', [c c], 'ydata', [s+y(1, 1) 8])
     
             % Angle subgraph
             % The values for the current iteration are saved
@@ -151,7 +151,7 @@ function [yMaxAngleMagnify, timeelapsed] = tacoma(inter, ic, h0, p, tol, W, omeg
             % Next subplot
             % These points will be plotted
             yPlotPosition = [yPlotPosition y(1,1)];
-
+            y(1,1)
             % The graph is drawn
             graph = plot(bridgePositionAxes, xPlot, yPlotPosition);
 
