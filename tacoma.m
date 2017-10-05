@@ -11,7 +11,7 @@
     % d: dempningskoeffisient
 % Kaller enstegs metode som trapstep.m eller fehlbergstep.m
 % Eksempel: tacoma([0 1000],[1 0 0.001 0],0.04,5,true)
-function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGraph)
+function [yMaxAngleMagnify, timeelapsed] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGraph)
     if (runGraph)
         clf % clear figure window
     end
@@ -83,9 +83,11 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGrap
     
     end
     constant = 0.00000000001; % Konstant som er st�rre enn 0. Benyttes for � beskytte mot sv�rt sm� verdier av w. 
+    tic;
     while h_sum+inter(1)  < inter(2)
         for i = 1:p
             k = k + 1;
+            
             h_sum = h_sum + h; % På grunn av variabel steglengde, summer alle stegene
             [w, err, z] = fehlbergstep(t(i), y(i,:), h, W, omega, d); % Fehlberg returnerer en tabell med beregnet y-verdi w og feilkilde err.
             t(i+1) = t(i)+h;
@@ -221,6 +223,8 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGrap
 
             drawnow limitrate;
             pause(h);
+
         end
     end
+    timeelapsed = toc;
 end

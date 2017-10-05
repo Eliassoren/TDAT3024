@@ -5,18 +5,28 @@ normalOmega = 2 * pi * 38 / 60;
 normalDempningsKoff = 0.01;
 
 
-runGraph = true; % Sett til true for Ã¥ rendre grafer
-exercise = 7; % Hvilken oppgave som skal kjÃ¸res
-
+runGraph = false; % Sett til true for Ã¥ rendre grafer
+exercise = 2; % Hvilken oppgave som skal kjÃ¸res
+interval = [0 2000]
+time_sum = 0;
+sim = 20; % Antall simuleringer
+time_spent_fehl = 0;
+time_spent_trap = 0;
 switch (exercise)
-    % Exercise 1 TODO: Use tacoma with trapstep instead of Fehlberg
+    % Exercise 1 
     case 1
-        traptacoma([0 500], [0 0 0.001 0], 0.04, 5, 59, normalOmega, normalDempningsKoff, runGraph)
-    
+        for i=0:sim
+        [angle, time] = traptacoma(interval, [0 0 0.001 0], 0.04, 5, 80, normalOmega, normalDempningsKoff, runGraph);
+        time_sum = time_sum+time;
+        end
+        time_spent_trap = time_sum/sim
     % Exercise 2
     case 2
-        tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, runGraph);
-        
+         for i=0:sim
+        [angle, time] = tacoma(interval, [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, runGraph);
+         time_sum = time_sum+time;
+         end
+         time_spent_fehl = time_sum/sim
     % Exercise 3
     case 3
         windspeed = 50;  % starting windspeed
