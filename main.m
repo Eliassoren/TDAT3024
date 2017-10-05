@@ -17,6 +17,18 @@ switch (exercise)
     case 2
         tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, runGraph);
         
+        % Generer plott som viser forskjell mellom vinkel på trapes og
+        % fehlberg
+        [angleMag, y] = traptacoma([0 500], [0 0 0.001 0], 0.04, 5, 80, normalOmega, normalDempningsKoff, false);
+        [angleMagNew, yNew] = tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, false);
+        [m, n] = size(y);
+        x = 1 : m;
+        hold on
+        plot(y(:, 5), y(:,2));
+        plot(yNew(:, 5), yNew(:,2));
+        hold off
+        legend('trap', 'fehlberg');
+
     % Exercise 3
     case 3
         windspeed = 50;  % starting windspeed
@@ -34,22 +46,26 @@ switch (exercise)
         end
         % Is the angle magnification approx consistent. YES
         
-    % Exercise 4 & 5 (finding minimum windspeed inwhich a angular
+    % Exercise 4 (finding minimum winds peed in which a angular
     % magnification of 100 or more occurs
     case 4
-        
         tolerance = 0.5 * 10^-3;
         
-        % Run this to find a interval if unsure
-%       n = 100;
-%       
-%       for i = 0: n
-%           angularMagnification = tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, 30 + i, normalOmega, normalDempningsKoff, false) - 100;
-%           if angularMagnification > 0
-%               i + 30
-%               break
-%           end
-%       end
+        % Bruteforce
+        n = 120;
+
+        for i = 0:1:n
+            angularMagnification = tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, i, normalOmega, normalDempningsKoff, false);
+            if angularMagnification >= 100
+                fprintf('Minimum vindstyrke funnet ved hjelp av bruteforce: %d km/t\n', i);
+                fprintf('Vinkelforstørrelse med denne vindstyken: %d\n', angularMagnification);
+                break
+            end
+        end
+        
+    % Exercise 5 - calculating minimum wind speed with equation solver
+    case 5
+        tolerance = 0.5 * 10^-3;
         
         % Defines the function and uses bisection with the defined function
         % This is so we can easily use tacoma - 100 to find roots
