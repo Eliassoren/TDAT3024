@@ -11,10 +11,11 @@
     % d: dempningskoeffisient
 % Kaller enstegs metode som trapstep.m eller fehlbergstep.m
 % Eksempel: tacoma([0 1000],[1 0 0.001 0],0.04,5,true)
-function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGraph)
+function [yMaxAngleMagnify, yHistory] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGraph)
     if (runGraph)
         clf % clear figure window
     end
+    yHistory = [];
     k = 1; % Foerste steg initert
     t_tolerance = 0.01; % Toleranse paa hvor langt over inter(2) 
     h = h0; % Foerste steglengde
@@ -102,7 +103,12 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGrap
                 e(i+1) = err;
                 rel = e(i+1)/max(norm(y(i+1,:),2),constant);
             end
-            y(i+1,:) = z; % Lokal ekstrapolering. N�r w er n�re nok z, benytt mer n�yaktige l�sning. 
+            y(i+1,:) = z; % Lokal ekstrapolering. N�r w er n�re nok z, benytt mer n�yaktige l�sning.
+            
+            [m, n] = size(yHistory);
+            if(m < 5000)
+                yHistory = [y(i+1,:) t(i + 1) ; yHistory];
+            end
         end
         % Hopp et steg tilbake om summen av steg overskrider topp av
         % intervall med for mye. Hvis ikke, behold verdier fra siste iterasjon.

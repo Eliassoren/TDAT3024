@@ -6,7 +6,7 @@ normalDempningsKoff = 0.01;
 
 
 runGraph = true; % Sett til true for Ã¥ rendre grafer
-exercise = 7; % Hvilken oppgave som skal kjÃ¸res
+exercise = 2; % Hvilken oppgave som skal kjÃ¸res
 
 switch (exercise)
     % Exercise 1 TODO: Use tacoma with trapstep instead of Fehlberg
@@ -15,8 +15,19 @@ switch (exercise)
     
     % Exercise 2
     case 2
-        tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, runGraph);
+        % tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, true)
         
+        % Generer plott som viser forskjell mellom vinkel p� trapes og
+        % fehlberg
+        [angleMag, y] = traptacoma([0 500], [0 0 0.001 0], 0.04, 5, 80, normalOmega, normalDempningsKoff, false);
+        [angleMagNew, yNew] = tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, false);
+        [m, n] = size(y);
+        x = 1 : m;
+        hold on
+        plot(y(:, 5), y(:,3));
+        plot(yNew(:, 5), yNew(:,3));
+        hold off
+        legend('trap', 'fehlberg');
     % Exercise 3
     case 3
         windspeed = 50;  % starting windspeed
