@@ -4,32 +4,30 @@
 normalOmega = 2 * pi * 38 / 60;
 normalDempningsKoff = 0.01;
 
-runGraph = true; % Sett til true for å rendre grafer
-exercise = 7; % Hvilken oppgave som skal kjøres
-
-%tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 59, normalOmega, normalDempningsKoff, false)
+runGraph = true; % Sett til true for Ã¥ rendre grafer
+exercise = 7; % Hvilken oppgave som skal kjÃ¸res
 
 switch (exercise)
     % Exercise 1 TODO: Use tacoma with trapstep instead of Fehlberg
     case 1
-        tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, runGraph)
+        traptacoma([0 500], [0 0 0.001 0], 0.04, 5, 59, normalOmega, normalDempningsKoff, runGraph)
     
     % Exercise 2
     case 2
-        tacoma([0 500], [0 0 0.001 0], 0.04, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, runGraph);
+        tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, runGraph);
         
     % Exercise 3
     case 3
-        % TODO: Bruk en for-løkke for å teste flere initialverdier for vind
+        % TODO: Bruk en for-lÃ¸kke for Ã¥ teste flere initialverdier for vind
         windspeed = 50;  % starting windspeed TODO: Says 50 in the exercise?
-        n = 5; % number of iterations
+        n = 10; % number of iterations
         xPlotPosition = [];
         yPlotPosition = [];
-        for iteration = 0: n
-            angle = 0.001 * 10^-iteration
-            angularMagnificationTheta = tacoma([0 500], [0 0 0.001 0], 0.04 ,5, 0.001 * 10^-iteration, windspeed, normalOmega, normalDempningsKoff, false)
+        for iteration = 3: n
+            angle = 1 * 10^-iteration
+            angularMagnificationTheta = tacoma([0 500], [0 0 (0.001 * 10^-iteration) 0], 0.04 ,5,  1* 10^-6, windspeed, normalOmega, normalDempningsKoff, false)
             if (runGraph)
-                xPlotPosition = [xPlotPosition angle];
+                xPlotPosition = [xPlotPosition iteration];
                 yPlotPosition = [yPlotPosition angularMagnificationTheta];
                 graph = plot(xPlotPosition, yPlotPosition);
             end
@@ -56,27 +54,39 @@ switch (exercise)
         % Defines the function and uses bisection with the defined function
         % This is so we can easily use tacoma - 100 to find roots
         F = @(windspeed) tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false) - 100;
-        windspeed = bisection(F, 56, 58, tolerance)
+        windspeed = bisection(F, 56, 58, tolerance);
         
         % The value below should be over 100
-        anglemagnification = tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false)
-        
+        angleMagnification = tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false);
+        fprintf('Bijeksjonsmetoden ga rot på W = %d km/t\n', windspeed);
+        fprintf('Kjøres simulasjonen med W = %d km/t, er vinkelforstørrelsen %d\n', windspeed, angleMagnification);
     % Exercise 6
     case 6
         % TODO: Oppgaven sier at man skal prøve flere verdier for
         % vindhastighet, vi bruker kun én
-        xPlotPosition = [];
-        yPlotPosition = [];
-        theta = 0.0000001;
+        theta = 1 * 10^-7;
         windspeed = 150;  % starting windspeed
-        mf = 0.000000002; % multiplicationfactor
-        n = 50; % steps that will be iterated
-        for (i = 0: n)
-            angularMagnification = tacoma([0 1000], [1 0 (theta + (i * mf)) 0], 25000, 5, 0.0000001, windspeed, normalOmega, normalDempningsKoff, false);
-            xPlotPosition = [xPlotPosition (theta + (i * mf))];
-            yPlotPosition = [yPlotPosition angularMagnification];
-            graph = plot(xPlotPosition, yPlotPosition);
+        mf = 2 * 10^-8; % multiplicationfactor
+        n = 10; % steps that will be iterated
+        k = 5; % windspeeds that will be iterated
+        hold on
+        for (j = 0: k)
+            xPlotPosition = [];
+            yPlotPosition = [];
+            for (i = 0: n)
+                angularMagnification = tacoma([0 500], [0 0 (theta + (i * mf)) 0], 0.04 ,5, 1 * 10^-6, windspeed, normalOmega, normalDempningsKoff, false);
+                if (angularMagnification < 100)
+                    i
+                    angleMag = (theta + (i * mf))
+                end
+                xPlotPosition = [xPlotPosition (theta + (i * mf))];
+                yPlotPosition = [yPlotPosition angularMagnification];
+            end
+            % Plotter en ny graf for hver endring i vindhastighet
+            plot(xPlotPosition, yPlotPosition);
+            windspeed = windspeed + 10;
         end
+        hold off
         % axis([ 0, t(1)+50, 0, yLim ]); % axis defined with calibration
         grid % grid enabled
     
@@ -96,7 +106,7 @@ switch (exercise)
         fprintf('Min. vindhastighet for d = 0.01, omega = 3: %d km/t\n', windspeed_old);
         fprintf('Min. vindhastighet for d = 0.02, omega = 3: %d km/t\n', windspeed_new);
         
-        % Koden under plotter alle 3 ulike vinkelforstørrelser ved de ulike
+        % Koden under plotter alle 3 ulike vinkelforstÃ¸rrelser ved de ulike
         % d- og omega-parametrene
         xVal = 0 : 0.5 : 120;
         yValOriginal = zeros(120/0.5, 1);
@@ -114,11 +124,11 @@ switch (exercise)
         plot(xVal, yValOriginal);
         plot(xVal, yValOld);
         plot(xVal, yValNew);
-        refline(0, 100); % Horisontal linje på y = 100
+        refline(0, 100); % Horisontal linje pÃ¥ y = 100
         hold off
         axis([0 120 0 200]);
         legend({'$d = 0.01, \omega = 2\pi*\frac{38}{60}$', '$d = 0.01, \omega = 3$', '$d = 0.02, \omega = 3$'},'Interpreter','latex');
         xlabel('Vindhastighet (km/t)');
-        ylabel('Vinkelforstørring');
+        ylabel('VinkelforstÃ¸rring');
         grid
 end
