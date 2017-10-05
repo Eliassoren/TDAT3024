@@ -7,7 +7,7 @@ normalDempningsKoff = 0.01;
 
 runGraph = true; % Sett til true for Ã¥ rendre grafer
 exercise = 2; % Hvilken oppgave som skal kjÃ¸res
-interval = [0 500]
+interval = [0 500];
 time_sum = 0;
 sim = 2; % Antall simuleringer
 time_spent_fehl = 0;

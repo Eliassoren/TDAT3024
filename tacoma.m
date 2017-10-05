@@ -151,7 +151,6 @@ function [yMaxAngleMagnify, timeelapsed] = tacoma(inter, ic, h0, p, tol, W, omeg
             % Next subplot
             % These points will be plotted
             yPlotPosition = [yPlotPosition y(1,1)];
-            y(1,1)
             % The graph is drawn
             graph = plot(bridgePositionAxes, xPlot, yPlotPosition);
 
