@@ -6,7 +6,7 @@ normalDempningsKoff = 0.01;
 
 
 runGraph = true; % Sett til true for Ã¥ rendre grafer
-exercise = 2; % Hvilken oppgave som skal kjÃ¸res
+exercise = 3; % Hvilken oppgave som skal kjÃ¸res
 interval = [0 500];
 time_sum = 0;
 sim = 1; % Antall simuleringer
@@ -49,11 +49,13 @@ switch (exercise)
         yPlotPosition = [];
         for iteration = 3: n
             angle = 1 * 10^-iteration
-            angularMagnificationTheta = tacoma([0 500], [0 0 (0.001 * 10^-iteration) 0], 0.04 ,5,  1* 10^-6, windspeed, normalOmega, normalDempningsKoff, false)
+            angularMagnificationTheta = tacoma([0 500], [0 0 angle 0], 0.04 ,5,  1* 10^-6, windspeed, normalOmega, normalDempningsKoff, false)
             if (runGraph)
                 xPlotPosition = [xPlotPosition iteration];
                 yPlotPosition = [yPlotPosition angularMagnificationTheta];
-                graph = plot(xPlotPosition, yPlotPosition);
+                plot(xPlotPosition, yPlotPosition);
+                xlabel('Startvinkel $\theta_0=10^{-x}$', 'Interpreter', 'latex');
+                ylabel('Vinkelforst�rrelse');
             end
         end
         % Is the angle magnification approx consistent. YES
