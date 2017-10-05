@@ -5,8 +5,8 @@ normalOmega = 2 * pi * 38 / 60;
 normalDempningsKoff = 0.01;
 
 
-runGraph = true; % Sett til true for Ã¥ rendre grafer
-exercise = 7; % Hvilken oppgave som skal kjÃ¸res
+runGraph = true; % Sett til true for ÃƒÂ¥ rendre grafer
+exercise = 2; % Hvilken oppgave som skal kjÃƒÂ¸res
 
 switch (exercise)
     % Exercise 1 TODO: Use tacoma with trapstep instead of Fehlberg
@@ -15,20 +15,19 @@ switch (exercise)
     
     % Exercise 2
     case 2
-        tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, runGraph);
+        % tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, true)
         
-        % Generer plott som viser forskjell mellom vinkel p� trapes og
+        % Generer plott som viser forskjell mellom vinkel på trapes og
         % fehlberg
         [angleMag, y] = traptacoma([0 500], [0 0 0.001 0], 0.04, 5, 80, normalOmega, normalDempningsKoff, false);
         [angleMagNew, yNew] = tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, false);
         [m, n] = size(y);
         x = 1 : m;
         hold on
-        plot(y(:, 5), y(:,2));
-        plot(yNew(:, 5), yNew(:,2));
+        plot(y(:, 5), y(:,3));
+        plot(yNew(:, 5), yNew(:,3));
         hold off
         legend('trap', 'fehlberg');
-
     % Exercise 3
     case 3
         windspeed = 50;  % starting windspeed
@@ -58,7 +57,7 @@ switch (exercise)
             angularMagnification = tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, i, normalOmega, normalDempningsKoff, false);
             if angularMagnification >= 100
                 fprintf('Minimum vindstyrke funnet ved hjelp av bruteforce: %d km/t\n', i);
-                fprintf('Vinkelforst�rrelse med denne vindstyken: %d\n', angularMagnification);
+                fprintf('Vinkelforstørrelse med denne vindstyken: %d\n', angularMagnification);
                 break
             end
         end
@@ -74,12 +73,12 @@ switch (exercise)
         
         % The value below should be over 100
         angleMagnification = tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false);
-        fprintf('Bijeksjonsmetoden ga rot på W = %d km/t\n', windspeed);
-        fprintf('Kjøres simulasjonen med W = %d km/t, er vinkelforstørrelsen %d\n', windspeed, angleMagnification);
+        fprintf('Bijeksjonsmetoden ga rot pÃ¥ W = %d km/t\n', windspeed);
+        fprintf('KjÃ¸res simulasjonen med W = %d km/t, er vinkelforstÃ¸rrelsen %d\n', windspeed, angleMagnification);
     % Exercise 6
     case 6
-        % TODO: Oppgaven sier at man skal prøve flere verdier for
-        % vindhastighet, vi bruker kun én
+        % TODO: Oppgaven sier at man skal prÃ¸ve flere verdier for
+        % vindhastighet, vi bruker kun Ã©n
         theta = 1 * 10^-7;
         windspeed = 150;  % starting windspeed
         mf = 2 * 10^-8; % multiplicationfactor
@@ -122,7 +121,7 @@ switch (exercise)
         fprintf('Min. vindhastighet for d = 0.01, omega = 3: %d km/t\n', windspeed_old);
         fprintf('Min. vindhastighet for d = 0.02, omega = 3: %d km/t\n', windspeed_new);
         
-        % Koden under plotter alle 3 ulike vinkelforstÃ¸rrelser ved de ulike
+        % Koden under plotter alle 3 ulike vinkelforstÃƒÂ¸rrelser ved de ulike
         % d- og omega-parametrene
         xVal = 0 : 0.5 : 120;
         yValOriginal = zeros(120/0.5, 1);
@@ -140,11 +139,11 @@ switch (exercise)
         plot(xVal, yValOriginal);
         plot(xVal, yValOld);
         plot(xVal, yValNew);
-        refline(0, 100); % Horisontal linje pÃ¥ y = 100
+        refline(0, 100); % Horisontal linje pÃƒÂ¥ y = 100
         hold off
         axis([0 120 0 200]);
         legend({'$d = 0.01, \omega = 2\pi*\frac{38}{60}$', '$d = 0.01, \omega = 3$', '$d = 0.02, \omega = 3$'},'Interpreter','latex');
         xlabel('Vindhastighet (km/t)');
-        ylabel('VinkelforstÃ¸rring');
+        ylabel('VinkelforstÃƒÂ¸rring');
         grid
 end
