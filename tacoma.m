@@ -133,12 +133,12 @@ function [yMaxAngleMagnify, timeelapsed, yHistory] = tacoma(inter, ic, h0, p, to
             yMaxAngleMagnify = abs(angleMagnify);
         end
         if (abs(y(1,1)) > yMaxYPosition)
-            yMaxYPosition = y(1,1);
+            yMaxYPosition = abs(y(1,1));
         end
         if (runGraph)
-            set(road, 'xdata', [-c c], 'ydata', [-s-y(1, 1) s-y(1, 1)])
-            set(lcable, 'xdata', [-c -c], 'ydata', [-s-y(1, 1) 8])
-            set(rcable, 'xdata', [c c], 'ydata', [s-y(1, 1) 8])
+            set(road, 'xdata', [-c c], 'ydata', [s+y(1, 1) s+y(1, 1)])
+            set(lcable, 'xdata', [-c -c], 'ydata', [s+y(1, 1) 8])
+            set(rcable, 'xdata', [c c], 'ydata', [s+y(1, 1) 8])
     
             % Angle subgraph
             % The values for the current iteration are saved
@@ -157,7 +157,6 @@ function [yMaxAngleMagnify, timeelapsed, yHistory] = tacoma(inter, ic, h0, p, to
             % Next subplot
             % These points will be plotted
             yPlotPosition = [yPlotPosition y(1,1)];
-
             % The graph is drawn
             graph = plot(bridgePositionAxes, xPlot, yPlotPosition);
 
@@ -233,11 +232,9 @@ function [yMaxAngleMagnify, timeelapsed, yHistory] = tacoma(inter, ic, h0, p, to
 
         end
     end
-    yMaxYPosition
-    yMaxAngleMagnify*ic(3)
-    yMaxAngleMagnify
+   
     timeelapsed = toc;
-    fprintf('Y',yMaxYPosition);
-    fprintf('theta', yMaxAngleMagnify*ic(3));
-    fprintf('magnify',yMaxAngleMagnify);
+    fprintf('Y %d\n',yMaxYPosition);
+    fprintf('theta %d\n', yMaxAngleMagnify*ic(3));
+    fprintf('magnify %d\n',yMaxAngleMagnify);
 end
