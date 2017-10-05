@@ -6,7 +6,7 @@
     % p: steg per punkt plottet
     % tol: feiltoleranse
     % W: vindhastighet i km/h
-    % runGraph: Kjør enten grafing eller computing
+    % runGraph: KjÃ¸r enten grafing eller computing
     % omega: svingningskoeffisient
     % d: dempningskoeffisient
 % Kaller enstegs metode som trapstep.m eller fehlbergstep.m
@@ -19,7 +19,7 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGrap
     t_tolerance = 0.01; % Toleranse paa hvor langt over inter(2) 
     h = h0; % Foerste steglengde
     y(1, :) = ic; % Legg inn initalverdier i systemet
-    w(1, :) = ic; % Startverdier i tilsvarende w-tabell. For å lagre w-verdiene
+    w(1, :) = ic; % Startverdier i tilsvarende w-tabell. For ï¿½ lagre w-verdiene
     t(1) = inter(1); % Legg starttid
     e(1) = 0.1; % Feilkilde
     h_sum = 0; % Sum av steg
@@ -82,27 +82,27 @@ function [yMaxAngleMagnify] = tacoma(inter, ic, h0, p, tol, W, omega, d, runGrap
     'erase', 'xor', 'xdata', [], 'ydata', []);
     
     end
-    constant = 0.00000000001; % Konstant som er større enn 0. Benyttes for å beskytte mot svært små verdier av w. 
+    constant = 0.00000000001; % Konstant som er stï¿½rre enn 0. Benyttes for ï¿½ beskytte mot svï¿½rt smï¿½ verdier av w. 
     while h_sum+inter(1)  < inter(2)
         for i = 1:p
             k = k + 1;
-            h_sum = h_sum + h; % På grunn av variabel steglengde, summer alle stegene
+            h_sum = h_sum + h; % PÃ¥ grunn av variabel steglengde, summer alle stegene
             [w, err, z] = fehlbergstep(t(i), y(i,:), h, W, omega, d); % Fehlberg returnerer en tabell med beregnet y-verdi w og feilkilde err.
             t(i+1) = t(i)+h;
             y(i+1,:) = w; 
             w(i+1,:) = w;
             e(i+1) = err;
             rel = e(i+1)/max(norm(y(i+1,:),2),constant);
-            h = h* 0.8 * (tol*norm(y(i+1,:),2)/e(i+1))^(1/5); % Juster steglengde basert på feilkilde
-            while ( rel > tol) % Proev igjen så lenge feilkilde er stoerre enn toleransen
-                h = h / 2;  % Halvver steglengde om andre forsÃ¸k med fehlberg etter justering ikke funker 
-                % Nytt forsÃ¸k etter fÃ¸rste justering
-                [w,err] = fehlbergstep(t(i), y(i,:), h, W, omega, d);
+            h = h* 0.8 * (tol*norm(y(i+1,:),2)/e(i+1))^(1/5); % Juster steglengde basert pÃ¥ feilkilde
+            while ( rel > tol) % Proev igjen sÃ¥ lenge feilkilde er stoerre enn toleransen
+                h = h / 2;  % Halvver steglengde om andre forsÃƒÂ¸k med fehlberg etter justering ikke funker 
+                % Nytt forsÃƒÂ¸k etter fÃƒÂ¸rste justering
+                [w, err] = fehlbergstep(t(i), y(i,:), h, W, omega, d);
                 y(i+1,:) = w;
                 e(i+1) = err;
                 rel = e(i+1)/max(norm(y(i+1,:),2),constant);
             end
-            y(i+1,:) = z; % Lokal ekstrapolering. Når w er nære nok z, benytt mer nøyaktige løsning. 
+            y(i+1,:) = z; % Lokal ekstrapolering. Nï¿½r w er nï¿½re nok z, benytt mer nï¿½yaktige lï¿½sning. 
         end
         % Hopp et steg tilbake om summen av steg overskrider topp av
         % intervall med for mye. Hvis ikke, behold verdier fra siste iterasjon.
