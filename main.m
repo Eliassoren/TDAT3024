@@ -19,7 +19,7 @@ switch (exercise)
         time_sum = time_sum+time;
         end
         time_spent_trap = time_sum/sim
-    % Exercise 2
+    % Aktivitet 2
     case 2
          for i=0:sim
            [angle, time, y] = tacoma(interval, [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, runGraph);
@@ -39,7 +39,7 @@ switch (exercise)
         hold off
         legend('trap', 'fehlberg');
 
-    % Exercise 3
+    % Aktivitet 3
     case 3
         windspeed = 50;  % starting windspeed
         n = 10; % number of iterations
@@ -58,7 +58,7 @@ switch (exercise)
         end
         % Is the angle magnification approx consistent. YES
         
-    % Exercise 4 (finding minimum winds peed in which a angular
+    % Aktivitet 4 (finding minimum winds peed in which a angular
     % magnification of 100 or more occurs
     case 4
         tolerance = 0.5 * 10^-3;
@@ -75,7 +75,7 @@ switch (exercise)
             end
         end
         
-    % Exercise 5 - calculating minimum wind speed with equation solver
+    % Aktivitet 5 - calculating minimum wind speed with equation solver
     case 5
         tolerance = 0.5 * 10^-3;
         
@@ -88,7 +88,8 @@ switch (exercise)
         angleMagnification = tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false);
         fprintf('Bijeksjonsmetoden ga rot på W = %d km/t\n', windspeed);
         fprintf('Kjøres simulasjonen med W = %d km/t, er vinkelforstørrelsen %d\n', windspeed, angleMagnification);
-    % Exercise 6
+        
+    % Aktivitet 6
     case 6
         theta = 1 * 10^-7;
         windspeed = 150;  % starting windspeed
@@ -115,7 +116,7 @@ switch (exercise)
         hold off
         grid % grid enabled
     
-    % Exercise 7
+    % Aktivitet 7
     case 7
         tolerance = 0.5 * 10^-3;
         newOmega = 3;

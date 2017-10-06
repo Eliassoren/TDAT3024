@@ -114,8 +114,6 @@ function [yMaxAngleMagnify, timeelapsed, yHistory] = tacoma(inter, ic, h0, p, to
             t(1) = t(p+1);
             e(1) = e(p+1);
         end
-        z1(k) = y(1, 1);
-        z3(k) = y(1, 3);
         
         angleMagnify = y(1,3) / initialAngle;
         if (abs(angleMagnify) > yMaxAngleMagnify) % calibration
@@ -131,15 +129,11 @@ function [yMaxAngleMagnify, timeelapsed, yHistory] = tacoma(inter, ic, h0, p, to
             set(lcable, 'xdata', [-c -c], 'ydata', [s+y(1, 1) 8])
             set(rcable, 'xdata', [c c], 'ydata', [s+y(1, 1) 8])
     
+            xPlot = [xPlot t(1)];
             % Angle subgraph
             % The values for the current iteration are saved
-            xPlot = [xPlot t(1)];
             yPlot = [yPlot y(1,3)];
-
-            %hold(angleGraphAxes, 'on');
-            %graph = plot(angleGraphAxes, t(1), y(1, 3), '*'); % The graph plots the points given
-            %hold(angleGraphAxes, 'off');
-            graph = plot(angleGraphAxes, xPlot, yPlot); % The graph plots the points given
+            plot(angleGraphAxes, xPlot, yPlot); % The graph plots the points given
             title(angleGraphAxes, 'Angle'); % Subgraph title
             xlabel(angleGraphAxes, 'Time (s)') % x-axis label
             ylabel(angleGraphAxes, 'Angle (radians)') % y-axis label
@@ -148,8 +142,8 @@ function [yMaxAngleMagnify, timeelapsed, yHistory] = tacoma(inter, ic, h0, p, to
             % Next subplot
             % These points will be plotted
             yPlotPosition = [yPlotPosition y(1,1)];
-            % The graph is drawn
-            graph = plot(bridgePositionAxes, xPlot, yPlotPosition);
+
+            plot(bridgePositionAxes, xPlot, yPlotPosition);
 
             title(bridgePositionAxes, 'Y-position of bridge'); % Title set, has to be done after graph
             xlabel(bridgePositionAxes, 'Time (s)') % x-axis label
@@ -162,7 +156,7 @@ function [yMaxAngleMagnify, timeelapsed, yHistory] = tacoma(inter, ic, h0, p, to
             yPlotError = [yPlotError e(1,1)];
 
             % Plot drawn
-            graph = plot(errorPlotAxes, xPlot, yPlotError);
+            plot(errorPlotAxes, xPlot, yPlotError);
 
             title(errorPlotAxes, 'Error'); % Title of graph
             xlabel(errorPlotAxes, 'Time (s)') % x-axis label
@@ -176,7 +170,7 @@ function [yMaxAngleMagnify, timeelapsed, yHistory] = tacoma(inter, ic, h0, p, to
             yPlotStepLength = [yPlotStepLength h];
 
             % Points get drawn
-            graph = plot(stepLengthAxes, xPlot, yPlotStepLength);
+            plot(stepLengthAxes, xPlot, yPlotStepLength);
 
             title(stepLengthAxes, 'Steplength'); % Title
             xlabel(stepLengthAxes, 'Time (s)') % x-axis label
@@ -193,7 +187,7 @@ function [yMaxAngleMagnify, timeelapsed, yHistory] = tacoma(inter, ic, h0, p, to
             yPlotErrorMagnify = [yPlotErrorMagnify errorMagnify];
 
             % Points get drawn
-            graph = plot(errorMagnificationAxes, xPlot, yPlotErrorMagnify);
+            plot(errorMagnificationAxes, xPlot, yPlotErrorMagnify);
 
             title(errorMagnificationAxes, 'Error magnification'); % Title
             xlabel(errorMagnificationAxes, 'Time (s)') % x-axis label
@@ -209,7 +203,7 @@ function [yMaxAngleMagnify, timeelapsed, yHistory] = tacoma(inter, ic, h0, p, to
             yPlotAngleMagnify = [yPlotAngleMagnify angleMagnify];
 
             % Points get drawn
-            graph = plot(angleMagnificationPlotAxes, xPlot, yPlotAngleMagnify);
+            plot(angleMagnificationPlotAxes, xPlot, yPlotAngleMagnify);
 
             title(angleMagnificationPlotAxes, 'Angle magnification'); % Title
             xlabel(angleMagnificationPlotAxes, 'Time (s)') % x-axis label

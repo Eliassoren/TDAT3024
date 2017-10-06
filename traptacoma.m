@@ -76,8 +76,6 @@ function [yMaxAngleMagnify, timeelapsed, yHistory] = traptacoma(inter, ic, h0, p
        
         y(1, :) = y(p+1, :);
         t(1) = t(p+1);
-        z1(k) = y(1, 1);
-        z3(k) = y(1, 3);
         
         angleMagnify = y(1,3) / initialAngle;
         if (abs(angleMagnify) > yMaxAngleMagnify) % calibration
@@ -91,15 +89,12 @@ function [yMaxAngleMagnify, timeelapsed, yHistory] = traptacoma(inter, ic, h0, p
             set(lcable, 'xdata', [-c -c], 'ydata', [-s-y(1, 1) 8])
             set(rcable, 'xdata', [c c], 'ydata', [s-y(1, 1) 8])
     
+            xPlot = [xPlot t(1)];
             % Angle subgraph
             % The values for the current iteration are saved
-            xPlot = [xPlot t(1)];
             yPlot = [yPlot y(1,3)];
 
-            %hold(angleGraphAxes, 'on');
-            %graph = plot(angleGraphAxes, t(1), y(1, 3), '*'); % The graph plots the points given
-            %hold(angleGraphAxes, 'off');
-            graph = plot(angleGraphAxes, xPlot, yPlot); % The graph plots the points given
+            plot(angleGraphAxes, xPlot, yPlot); % The graph plots the points given
             title(angleGraphAxes, 'Angle'); % Subgraph title
             xlabel(angleGraphAxes, 'Time (s)') % x-axis label
             ylabel(angleGraphAxes, 'Angle (radians)') % y-axis label
@@ -110,17 +105,13 @@ function [yMaxAngleMagnify, timeelapsed, yHistory] = traptacoma(inter, ic, h0, p
             yPlotPosition = [yPlotPosition y(1,1)];
 
             % The graph is drawn
-            graph = plot(bridgePositionAxes, xPlot, yPlotPosition);
+            plot(bridgePositionAxes, xPlot, yPlotPosition);
 
             title(bridgePositionAxes, 'Y-position of bridge'); % Title set, has to be done after graph
             xlabel(bridgePositionAxes, 'Time (s)') % x-axis label
             ylabel(bridgePositionAxes, 'height (m)') % y-axis label
             grid(bridgePositionAxes);
-
-           
-
-          
-
+            
             % Next subplot
             % ANGLE MAGNIFICATION
             
@@ -128,7 +119,7 @@ function [yMaxAngleMagnify, timeelapsed, yHistory] = traptacoma(inter, ic, h0, p
             yPlotAngleMagnify = [yPlotAngleMagnify angleMagnify];
 
             % Points get drawn
-            graph = plot(angleMagnificationPlotAxes, xPlot, yPlotAngleMagnify);
+            plot(angleMagnificationPlotAxes, xPlot, yPlotAngleMagnify);
 
             title(angleMagnificationPlotAxes, 'Angle magnification'); % Title
             xlabel(angleMagnificationPlotAxes, 'Time (s)') % x-axis label

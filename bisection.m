@@ -1,3 +1,4 @@
+% En enkel implementasjon av biseksjonsmetoden.
 function [c] = bisection(F, a, b, tolerance)
     if (F(a)*F(b) > 0)
         c = -1;
