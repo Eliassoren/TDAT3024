@@ -1,12 +1,10 @@
-% ([intervall],initialverdier[y y' theta theta'],antall steg,steg per plotpoint, toleranse, vindhastighet km/h, boolean kjor grafing eller computing)
-
-% Standard verdi for koeffisienter
+% Standardverdier for argumenter
 normalOmega = 2 * pi * 38 / 60;
 normalDempningsKoff = 0.01;
 
+runGraph = true; % Sett til true for � rendre grafer
+exercise = 1; % Hvilken oppgave som skal kj�res
 
-runGraph = true; % Sett til true for Ã¥ rendre grafer
-exercise = 3; % Hvilken oppgave som skal kjÃ¸res
 interval = [0 500];
 time_sum = 0;
 sim = 1; % Antall simuleringer
@@ -14,7 +12,7 @@ time_spent_fehl = 0;
 time_spent_trap = 0;
 
 switch (exercise)
-    % Exercise 1 
+    % Aktivitet 1 
     case 1
         for i=0:sim
         [angle, time, y] = traptacoma(interval, [0 0 0.001 0], 0.04, 5, 80, normalOmega, normalDempningsKoff, runGraph);
@@ -29,7 +27,7 @@ switch (exercise)
          end
          time_spent_fehl = time_sum/sim
         
-        % Generer plott som viser forskjell mellom vinkel på trapes og
+        % Generer plott som viser forskjell mellom vinkel p� trapes og
         % fehlberg
         [angleMag, time, y] = traptacoma([0 500], [0 0 0.001 0], 0.04, 5, 80, normalOmega, normalDempningsKoff, false);
         [angleMagNew, time, yNew] = tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, 1* 10^-6, 80, normalOmega, normalDempningsKoff, false);
@@ -72,7 +70,7 @@ switch (exercise)
             angularMagnification = tacoma([0 500], [0 0 0.001 0], 0.04, 5, tolerance, i, normalOmega, normalDempningsKoff, false);
             if angularMagnification >= 100
                 fprintf('Minimum vindstyrke funnet ved hjelp av bruteforce: %d km/t\n', i);
-                fprintf('Vinkelforstørrelse med denne vindstyken: %d\n', angularMagnification);
+                fprintf('Vinkelforst�rrelse med denne vindstyken: %d\n', angularMagnification);
                 break
             end
         end
@@ -88,12 +86,10 @@ switch (exercise)
         
         % The value below should be over 100
         angleMagnification = tacoma([0 500], [0 0 0.001 0], 0.0000004, 5, tolerance, windspeed, normalOmega, normalDempningsKoff, false);
-        fprintf('Bijeksjonsmetoden ga rot pÃ¥ W = %d km/t\n', windspeed);
-        fprintf('KjÃ¸res simulasjonen med W = %d km/t, er vinkelforstÃ¸rrelsen %d\n', windspeed, angleMagnification);
+        fprintf('Bijeksjonsmetoden ga rot p� W = %d km/t\n', windspeed);
+        fprintf('Kj�res simulasjonen med W = %d km/t, er vinkelforst�rrelsen %d\n', windspeed, angleMagnification);
     % Exercise 6
     case 6
-        % TODO: Oppgaven sier at man skal prÃ¸ve flere verdier for
-        % vindhastighet, vi bruker kun Ã©n
         theta = 1 * 10^-7;
         windspeed = 150;  % starting windspeed
         mf = 2 * 10^-8; % multiplicationfactor
@@ -117,7 +113,6 @@ switch (exercise)
             windspeed = windspeed + 10;
         end
         hold off
-        % axis([ 0, t(1)+50, 0, yLim ]); % axis defined with calibration
         grid % grid enabled
     
     % Exercise 7
@@ -136,7 +131,7 @@ switch (exercise)
         fprintf('Min. vindhastighet for d = 0.01, omega = 3: %d km/t\n', windspeed_old);
         fprintf('Min. vindhastighet for d = 0.02, omega = 3: %d km/t\n', windspeed_new);
         
-        % Koden under plotter alle 3 ulike vinkelforstÃƒÂ¸rrelser ved de ulike
+        % Koden under plotter alle 3 ulike vinkelforst�rrelser ved de ulike
         % d- og omega-parametrene
         xVal = 0 : 0.5 : 120;
         yValOriginal = zeros(120/0.5, 1);
@@ -154,11 +149,11 @@ switch (exercise)
         plot(xVal, yValOriginal);
         plot(xVal, yValOld);
         plot(xVal, yValNew);
-        refline(0, 100); % Horisontal linje pÃƒÂ¥ y = 100
+        refline(0, 100); % Horisontal linje p� y = 100
         hold off
         axis([0 120 0 200]);
         legend({'$d = 0.01, \omega = 2\pi*\frac{38}{60}$', '$d = 0.01, \omega = 3$', '$d = 0.02, \omega = 3$'},'Interpreter','latex');
         xlabel('Vindhastighet (km/t)');
-        ylabel('VinkelforstÃƒÂ¸rring');
+        ylabel('Vinkelforst�rring');
         grid
 end

@@ -5,7 +5,7 @@
     % h: steglengde
     % p: steg per punkt plottet
     % W: vindhastighet i km/h
-    % runGraph: KjÃ¸r enten grafing eller computing
+    % runGraph: Kjør enten grafing eller computing
     % omega: svingningskoeffisient
     % d: dempningskoeffisient
 % Kaller enstegs metode som trapstep.m eller fehlbergstep.m
@@ -25,50 +25,46 @@ function [yMaxAngleMagnify, timeelapsed, yHistory] = traptacoma(inter, ic, h0, p
     initialAngle = y(1,3); % Startvinkel fra initialverdier
     
     yMaxAngleMagnify = 0; % Denne variabelen brukes i computing og er derfor definert her
-    yMax = 0; 
-    yMaxYPosition = 0;
-    % This value is for finding if the error is magnified by 100 or more
-    angleMagnify = 0;
     
     if (runGraph)  
-    % These tables contain the values being plotted 
-    % into each graph and subgraph
-    xPlot = [];
-    yPlot = [];
-    yPlotPosition = [];
-    yPlotAngleMagnify = [];
+        % These tables contain the values being plotted 
+        % into each graph and subgraph
+        xPlot = [];
+        yPlot = [];
+        yPlotPosition = [];
+        yPlotAngleMagnify = [];
 
-    % warning('off', 'all');
-    
-    % Define axes
-    figureAxes = subplot(3, 3, 1);
-    angleGraphAxes = subplot(3, 3, 2);
-    bridgePositionAxes = subplot(3, 3, 3);
-    angleMagnificationPlotAxes = subplot(3, 3, 7);
-    
-    set(figureAxes, 'XLim', [-6.5 6.5], 'YLim', [-20 20], ...
-        'XTick', [-6 0 6], 'YTick', [-16 -12 -8 -4 0 4 8 12 16], ...
-        'Drawmode', 'fast', 'Visible', 'on', 'NextPlot', 'add');
-    axis(figureAxes, 'square'); % Make aspect ratio 1:1
-    
-    title(figureAxes, 'Tacoma bridge simulation'); % graph title
-    xlabel(figureAxes, 'Width (m)') % x-axis label
-    ylabel(figureAxes, 'Height (m)') % y-axis label
-    
-    % Define lines for figure
-    road = line(figureAxes, 'color', 'b', 'LineStyle', ' - ', 'LineWidth', 5, ...
-    'erase', 'xor', 'xdata', [], 'ydata', []);
-    lcable = line(figureAxes, 'color', 'r', 'LineStyle', ' - ', 'LineWidth', 1, ...
-    'erase', 'xor', 'xdata', [], 'ydata', []);
-    rcable = line(figureAxes, 'color', 'r', 'LineStyle', ' - ', 'LineWidth', 1, ...
-    'erase', 'xor', 'xdata', [], 'ydata', []);
-    
+        % warning('off', 'all');
+
+        % Define axes
+        figureAxes = subplot(3, 3, 1);
+        angleGraphAxes = subplot(3, 3, 2);
+        bridgePositionAxes = subplot(3, 3, 3);
+        angleMagnificationPlotAxes = subplot(3, 3, 7);
+
+        set(figureAxes, 'XLim', [-6.5 6.5], 'YLim', [-20 20], ...
+            'XTick', [-6 0 6], 'YTick', [-16 -12 -8 -4 0 4 8 12 16], ...
+            'Drawmode', 'fast', 'Visible', 'on', 'NextPlot', 'add');
+        axis(figureAxes, 'square'); % Make aspect ratio 1:1
+
+        title(figureAxes, 'Tacoma bridge simulation'); % graph title
+        xlabel(figureAxes, 'Width (m)') % x-axis label
+        ylabel(figureAxes, 'Height (m)') % y-axis label
+
+        % Define lines for figure
+        road = line(figureAxes, 'color', 'b', 'LineStyle', ' - ', 'LineWidth', 5, ...
+        'erase', 'xor', 'xdata', [], 'ydata', []);
+        lcable = line(figureAxes, 'color', 'r', 'LineStyle', ' - ', 'LineWidth', 1, ...
+        'erase', 'xor', 'xdata', [], 'ydata', []);
+        rcable = line(figureAxes, 'color', 'r', 'LineStyle', ' - ', 'LineWidth', 1, ...
+        'erase', 'xor', 'xdata', [], 'ydata', []);
     end
+    
     tic;
     for k = 1:n
         for i = 1:p
             k = k + 1;
-            y(i+1,:) = trapstep(t(i), y(i,:), h, W, omega, d); % Fehlberg returnerer en tabell med beregnet y-verdi w og feilkilde err.
+            y(i+1,:) = trapstep(t(i), y(i,:), h, W, omega, d);
 
             t(i+1) = t(i)+h;
             
@@ -83,15 +79,14 @@ function [yMaxAngleMagnify, timeelapsed, yHistory] = traptacoma(inter, ic, h0, p
         z1(k) = y(1, 1);
         z3(k) = y(1, 3);
         
-        c = len * cos(y(1, 3));
-        s = len * sin(y(1, 3));
-        
         angleMagnify = y(1,3) / initialAngle;
         if (abs(angleMagnify) > yMaxAngleMagnify) % calibration
             yMaxAngleMagnify = abs(angleMagnify);
         end
         
         if (runGraph)
+            c = len * cos(y(1, 3));
+            s = len * sin(y(1, 3));
             set(road, 'xdata', [-c c], 'ydata', [-s-y(1, 1) s-y(1, 1)])
             set(lcable, 'xdata', [-c -c], 'ydata', [-s-y(1, 1) 8])
             set(rcable, 'xdata', [c c], 'ydata', [s-y(1, 1) 8])
@@ -138,8 +133,6 @@ function [yMaxAngleMagnify, timeelapsed, yHistory] = traptacoma(inter, ic, h0, p
             title(angleMagnificationPlotAxes, 'Angle magnification'); % Title
             xlabel(angleMagnificationPlotAxes, 'Time (s)') % x-axis label
             ylabel(angleMagnificationPlotAxes, 'Angle magnification') % y-axis label
-
-            %axis([ 0, t(1)+50, -yLim, yLim ]); % axis defined with calibration
             grid(angleMagnificationPlotAxes); % grid enabled
 
             drawnow limitrate;
